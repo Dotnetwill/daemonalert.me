@@ -1,5 +1,7 @@
 import unittest
-from daemonAlertMe import HashCheck
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker 
+from daemonAlertMe import HashCheck, Base
 
 class fake_url_reader():
     def __init__(self, page):
@@ -20,3 +22,13 @@ class HashCheckTests(unittest.TestCase):
         url_reader_fake = fake_url_reader('page')
         
         self.assertTrue(check.has_changes(url_reader_fake))
+
+class UriMonitorTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls._engine = create_engine('sqlite:///./site.db')
+        Base.metadata.create_all(cls._engine)
+        cls._db_session = scoped_session(sessionmaker(autocommit=True,
+                                         autoflush=True,
+                                         bind=cls._engine))
+        
