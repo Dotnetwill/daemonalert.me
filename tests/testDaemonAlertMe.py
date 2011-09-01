@@ -41,8 +41,8 @@ class UriMonitorTests(unittest.TestCase):
         self.cur_session = self.Session()
     
     def tearDown(self):
-        self.cur_session.query(UriCheck).all().delete()
-        self.cur_session.query(Alert).all().delete()
+        self.cur_session.connection().execute("DELETE FROM " + UriCheck.__tablename__)
+        self.cur_session.connection().execute("DELETE FROM " + Alert.__tablename__)
         
         
     def test_run_all_1_check_no_alerts_no_url_opened(self):
