@@ -21,7 +21,16 @@ class FakeSMTP():
         
     def __getattr__(self, name):
         return lambda a = None, b = None: False
-    
+
+class FakeAlerter():
+    def __init__(self):
+        self.alert_called = False
+        
+    def send_alerts_for_id(self, check_id, url):
+        self.alert_called = True
+        self.alert_for_id = check_id
+        self.alert_url = url
+            
 class FakeCheck():
     last_instance = None
     change_return_value = False
@@ -95,8 +104,11 @@ class DbInMemoryTest(unittest.TestCase):
 
 class UriMonitorTests(DbInMemoryTest):
     def setup_for_test(self):
+        #Fale alerter
+        self.alerter = FakeAlerter()
+        
         #The class under test
-        self.monitor = UriMonitor(self.cur_session)
+        self.monitor = UriMonitor(self.cur_session, self.alerter)
         
         #Patch out urlopen
         self.fake_url_reader = FakeUrlReader()
@@ -149,7 +161,31 @@ class UriMonitorTests(DbInMemoryTest):
         self.monitor.run_all()
         
         self.assertTrue(FakeCheck.last_instance.has_changes_called)
+
+    def test_run_all_1_check_with_alert_check_changed_alert_sent(self):
+        expected_check_id = 1
+        expected_url = 'google.com'
+        self.add_with_one_uri_check_with_id_and_no_alerts(id = expected_check_id, url=expected_url)
+        self.add_alert_for_uri_check_with_id(uri_check_id = expected_check_id)
+        FakeCheck.change_return_value = True
         
+        self.monitor.run_all()
+        
+        self.assertTrue(self.alerter.alert_called)
+        self.assertEqual(self.alerter.alert_for_id, expected_check_id)
+        self.assertEqual(self.alerter.alert_url, expected_url)
+        
+    def test_run_all_1_check_with_alert_check_no_changed_alert_not_sent(self):
+        expected_check_id = 1
+        expected_url = 'google.com'
+        self.add_with_one_uri_check_with_id_and_no_alerts(id = expected_check_id, url=expected_url)
+        self.add_alert_for_uri_check_with_id(uri_check_id = expected_check_id)
+        FakeCheck.change_return_value = False
+        
+        self.monitor.run_all()
+        
+        self.assertFalse(self.alerter.alert_called)
+   
 class EmailAlertTests(DbInMemoryTest):
     def setup_for_test(self):
         self.email_alert = EmailAlert(self.cur_session)

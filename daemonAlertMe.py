@@ -48,15 +48,17 @@ class HashCheck():
         pass
     
 class UriMonitor():
-    def __init__(self, dbsession):
+    def __init__(self, dbsession, alerter):
         self.db_session = dbsession
+        self.alerter = alerter
         
     def run_all(self):
         checks_to_run = self.db_session.query(UriCheck).from_statement("SELECT UriChecks.id, url, check_type, check_options, last_check FROM UriChecks JOIN Alerts AS a ON UriChecks.id = a.check_id").all()
         for check in checks_to_run:
             hash_check = HashCheck(check.check_options)
             url_stream = urllib2.urlopen(check.url)
-            hash_check.has_changes(url_stream)
+            if hash_check.has_changes(url_stream):
+                self.alerter.send_alerts_for_id(check.id, check.url)
 
 class EmailAlert():
     NO_LIMIT = -1
@@ -106,10 +108,28 @@ class EmailAlert():
         s.sendmail(SMTP_SERVER_UNAME, target_email, email.as_string())
         s.quit()
 
-    
-
+engine = None
+Session = None
 def init_engine(connection_string):
-    engine = create_engine(connection_string,  echo=True)
-    Base.metadata.create_all(engine)
+    global engine 
+    if engine == None:
+        engine = create_engine(connection_string,  echo=True)
+        Base.metadata.create_all(engine)
+        
     return engine
+
+def get_session():
+    engine = init_engine('sqlite:///./site.db')
+    global Session 
+    if Session == None:
+        Session = scoped_session(sessionmaker(autocommit=True,
+                                              autoflush=True,
+                                            bind=engine))
+    return Session
+
+if __name__ == '__main__':
+    Session = get_session()
+    a_session = Session()
+    alerter = EmailAlert(a_session)
+    UriMonitor(a_session, alerter).run_all()
     
