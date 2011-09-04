@@ -36,16 +36,17 @@ class Alert(Base):
 
 
 class HashCheck():
-    def __init__(self, checkOptions):
-        self.check_options = checkOptions
+    def __init__(self, uri_check):
+        self.uri_check = uri_check
     
     def has_changes(self, url_stream):
         page = url_stream.read()
         hash = hashlib.md5(page).hexdigest()
-        return hash != self.check_options
-    
-    def notify(self):
-        pass
+        if not hash == self.uri_check.check_options:
+            self.uri_check.check_options = hash
+            return True
+        else:
+            return False
     
 class UriMonitor():
     def __init__(self, dbsession, alerter):

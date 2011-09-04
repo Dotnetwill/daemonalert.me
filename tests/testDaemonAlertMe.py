@@ -58,18 +58,31 @@ class FakeUrlReader():
         return self
 
 class HashCheckTests(unittest.TestCase):
+    md_hash_page = '71860c77c6745379b0d44304d66b6a13' #MD5 of the word page
     def test_has_changes_hashTheSame_NoChange(self):
-        check = HashCheck('71860c77c6745379b0d44304d66b6a13') #MD5 of the word page
+        uri_check = UriCheck()
+        uri_check.check_options = HashCheckTests.md_hash_page
+        
+        check = HashCheck(uri_check) 
         url_reader_fake = FakeUrlReader('page')
         
         self.assertFalse(check.has_changes(url_reader_fake))
         
     def test_has_changes_hashDifferentSame_ReturnsTrue(self):
-        check = HashCheck('')
+        uri_check = UriCheck()
+        check = HashCheck(uri_check)
         url_reader_fake = FakeUrlReader('page')
         
         self.assertTrue(check.has_changes(url_reader_fake))
-
+        
+    def test_has_changes_hash_is_different_stored_hash_updated(self):
+        uri_check = UriCheck()
+        check = HashCheck(uri_check)
+        url_reader_fake = FakeUrlReader('page')
+        
+        check.has_changes(url_reader_fake)
+        self.assertEqual(uri_check.check_options, HashCheckTests.md_hash_page)
+        
 class DbInMemoryTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
