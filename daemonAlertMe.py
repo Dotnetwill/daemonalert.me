@@ -22,7 +22,7 @@ class UriCheck(Base):
     check_type = Column(Unicode)
     check_options = Column(Unicode)
     last_check = Column(DateTime, default=datetime.datetime.now)
-    
+     
 class Alert(Base):
     __tablename__ = 'Alerts'
     
@@ -31,7 +31,7 @@ class Alert(Base):
     check = relationship('UriCheck')
     email = Column(Unicode)
     num_of_times = Column(Integer)
-    num_of_times_alerted = Column(Integer)
+    num_of_times_alerted = Column(Integer, nullable = False, default=0)
     stop = Column(Boolean) 
 
 
@@ -55,9 +55,11 @@ class UriMonitor():
     def run_all(self):
         checks_to_run = self.db_session.query(UriCheck).from_statement("SELECT UriChecks.id, url, check_type, check_options, last_check FROM UriChecks JOIN Alerts AS a ON UriChecks.id = a.check_id").all()
         for check in checks_to_run:
+            print 'about to run check on ' + check.url
             hash_check = HashCheck(check.check_options)
             url_stream = urllib2.urlopen(check.url)
             if hash_check.has_changes(url_stream):
+                print 'hash changes requesting alert sent'
                 self.alerter.send_alerts_for_id(check.id, check.url)
 
 class EmailAlert():
@@ -68,6 +70,7 @@ class EmailAlert():
     def send_alerts_for_id(self, check_id, url):
         alerts = self.db_session.query(Alert).from_statement("SELECT * FROM Alerts WHERE check_id = :id AND (num_of_times = :no_limit_value OR num_of_times_alerted < num_of_times)").params(id = check_id, no_limit_value = EmailAlert.NO_LIMIT).all()
         for alert in alerts:
+            print 'found someone to alert ' + alert.email
             self._create_email(alert, url)
             alert.num_of_times_alerted = alert.num_of_times_alerted + 1
        

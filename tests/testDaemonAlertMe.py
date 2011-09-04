@@ -342,4 +342,12 @@ class SiteTests(DbInMemoryTest):
     def test_add_1_entry_added_redirect_back_to_home_page(self):
         res = self.app.post('/add', data=dict(Url='http://tart', Email='test@domain.com', AlertTimes=1))
         assert res.status_code == 302 
+
+    def test_add_1_entry_added_uri_already_exists_only_alert_created(self):
+        test_url = 'http://tart'
+        self.add_with_one_uri_check_with_id_and_no_alerts(id = 1, url = test_url)
+       
         
+        self.app.post('/add', data=dict(Url=test_url, Email='test@domain.com', AlertTimes=1))
+        
+        assert self.cur_session.query(UriCheck).count() == 1         
