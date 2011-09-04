@@ -1,0 +1,42 @@
+{% extends "_masterpage.html" %}
+{% block body %}
+<div class="aboutbox"><h2>About us</h2><p>Constantly refreshing a page waiting for it to change?  Check a site every morning to see if registration has opened?  Well why not let us do that for you!</p><br /> 
+	<p>We will monitor a url for you and notify you if there is any change to the page via email or twitter</p>
+</div>
+    <div class="content">
+    	<div class="stand-out">
+    	<h2>Alert me!</h2>
+          <form action="/Add" method="post">
+             <p><label for="Url">Url</label> 
+             <input class="form-textbox" id="Url" maxlength="135" name="Url" type="text" value="" /> </p>
+             <br />
+              <p><label for="Email">Email</label> 
+             <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="" /> </p>
+             <br />
+             <p><label for="AlertTimes">Alert Me</label> <br /> 
+            <input type="radio" name="AlertTimes" value="1" checked="" />Just of the next change <br />
+			<input type="radio" name="AlertTimes" value="0" />Every change till I disable it
+            <br />         
+            <input type="submit" class="submit-button" value="Add Alert" />
+          </form>
+        </div>
+        <br /> <br />
+        <div class="title"><h2>Latest Monitored Urls</h2>
+        <div id="results">
+        	 
+{% if checks|length > 0 %}
+{% for check in checks %}
+        <div class="ignore-result"><p class="ignore-name"><a href="{{ check.url }}">{{ check.url }}</a></p>
+                <p class="ignore-desc"></p>
+               
+        </div>
+{% endfor %}
+{% else %}
+    <div class="ignore-result">
+        <h2>Sorry, we're empty at the moment!</h2>
+        </div>
+    </div>
+{% endif %}
+        </div>
+        
+{% endblock %}

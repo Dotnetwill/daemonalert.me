@@ -109,7 +109,7 @@ class EmailAlert():
         s.quit()
 
 engine = None
-Session = None
+db_session = None
 def init_engine(connection_string):
     global engine 
     if engine == None:
@@ -120,16 +120,19 @@ def init_engine(connection_string):
 
 def get_session():
     engine = init_engine('sqlite:///./site.db')
-    global Session 
-    if Session == None:
-        Session = scoped_session(sessionmaker(autocommit=True,
+    global db_session 
+    if db_session == None:
+        db_session = scoped_session(sessionmaker(autocommit=True,
                                               autoflush=True,
                                             bind=engine))
-    return Session
+    return db_session
 
 if __name__ == '__main__':
-    Session = get_session()
-    a_session = Session()
+    a_session = get_session()
     alerter = EmailAlert(a_session)
+    #Run app
     UriMonitor(a_session, alerter).run_all()
+    
+    #teardown
+    a_session.remove()
     

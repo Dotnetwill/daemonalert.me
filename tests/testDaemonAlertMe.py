@@ -3,8 +3,8 @@ import urllib2
 import daemonAlertMe
 import smtplib
 from daemonAlertMe import HashCheck, init_engine, UriCheck, Alert, UriMonitor, EmailAlert
-from sqlalchemy.orm import sessionmaker 
-
+from sqlalchemy.orm import sessionmaker , scoped_session
+import site
 
 class FakeSMTP():
     instance = None
@@ -281,3 +281,65 @@ class EmailAlertTests(DbInMemoryTest):
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
         
         self.assertTrue(FakeSMTP.instance.sendmail_called)
+
+class SiteTests(DbInMemoryTest):
+    def setup_for_test(self):
+        site.app.db = scoped_session(self.Session) 
+        self.cur_session = site.app.db
+        site.app.config['TESTING'] = True
+        self.app = site.app.test_client()
+        
+    def clean_up_after_test(self):
+        pass
+    
+    def test_index_no_entries_empty_message_shown(self):
+        res = self.app.get('/') 
+        assert "Sorry, we're empty at the moment!" in res.data
+    
+    def test_index_2_entries_both_urls_shown(self):
+        expected_url1 = 'google.com'
+        
+        self.add_with_one_uri_check_with_id_and_no_alerts(id = 0, url = expected_url1)
+        expected_url2 = 'knvrt.me'
+        self.add_with_one_uri_check_with_id_and_no_alerts(id = 1, url = expected_url2)
+         
+        res = self.app.get('/') 
+       
+        assert '<a href="' + expected_url1 + '">' + expected_url1 + '</a>' in res.data
+        assert '<a href="' + expected_url2 + '">' + expected_url2 + '</a>' in res.data
+        
+    def test_add_1_entry_added_database(self):
+        expected_url = 'http://test'
+        expected_email = 'test@domain.com'
+        expected_alert_times = 1
+        
+        self.app.post('/add', data=dict(Url=expected_url, Email=expected_email, AlertTimes=expected_alert_times)) 
+       
+        checks_in_db = self.cur_session.query(UriCheck).all()
+        alerts_in_db = self.cur_session.query(Alert).all()
+
+        assert checks_in_db[0].url == expected_url
+        assert alerts_in_db[0].email == expected_email
+        assert alerts_in_db[0].check_id == checks_in_db[0].id 
+        assert alerts_in_db[0].num_of_times == expected_alert_times
+        
+    def test_add_1_entry_no_http_at_start_add_when_inserted(self):
+        expected_url = 'test'
+      
+        self.app.post('/add', data=dict(Url=expected_url, Email='test@domain.com', AlertTimes=1)) 
+       
+        checks_in_db = self.cur_session.query(UriCheck).all()
+        assert checks_in_db[0].url == 'http://' + expected_url
+    
+    def test_add_1_entry_starts_with_https_no_http_prepensws(self):
+        expected_url = 'https://test'
+      
+        self.app.post('/add', data=dict(Url=expected_url, Email='test@domain.com', AlertTimes=1)) 
+       
+        checks_in_db = self.cur_session.query(UriCheck).all()
+        assert checks_in_db[0].url == expected_url
+        
+    def test_add_1_entry_added_redirect_back_to_home_page(self):
+        res = self.app.post('/add', data=dict(Url='http://tart', Email='test@domain.com', AlertTimes=1))
+        assert res.status_code == 302 
+        

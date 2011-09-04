@@ -1,0 +1,271 @@
+html, body, div, span, applet, object, iframe,
+h1, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+	font-family: "Lucida Grande","Lucida Sans","Lucida Sans Unicode",Verdana,sans-serif;
+
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+h2
+{
+    font-size: 130%;
+	vertical-align: baseline;
+	background: transparent;
+
+}.header{
+
+	padding: 10px;
+
+	min-width: 850px;
+
+	margin: 0px;
+
+	border-style: none;
+
+    background:transparent url('bg.png') repeat-x scroll 0 0;
+
+}
+
+.navlinks
+{
+right: 5px;
+position: absolute;
+margin: 0px;
+float: right;
+top: 10px;
+font-size: small;
+background-repeat: repeat-x;
+color: black;
+font-family: "Lucida Grande","Lucida Sans","Lucida Sans Unicode",Verdana,sans-serif;
+white-space:nowrap;
+list-style-type:none;
+
+}
+
+.navlinks li 
+{
+top: 10px;
+display:inline;
+float:left;
+margin-right:4px;
+position:relative;
+}
+
+.aboutbox 
+{
+	padding-bottom: 15px;
+	padding-right: 10%;
+	padding-left: 10%;
+	padding-top: 15px;
+	float: right;
+	position: relative;
+	clear: both;
+	right: 0px;
+	left: 0px;
+	color: white;
+	font-family: "Lucida Grande","Lucida Sans","Lucida Sans Unicode",Verdana,sans-serif;
+	line-height: 1.2em;
+	background-color: #2c32a7;
+}
+
+.aboutbox p
+{
+
+	line-height: 1.2em;
+
+}
+
+.content
+{
+	padding-top: 10px;
+	padding-right: 10%;
+	padding-left: 10%;
+	position: relative;
+	clear: both;
+}
+
+
+.ignore-result
+{
+	padding-bottom: 8px;
+	line-height: 1.2em;
+	border-top-width: 1px;
+	border-top-color: #9b9b9b;
+	border-top-style: outset;
+	padding-top: 8px;
+}
+
+a.tag
+{
+	color: #6e6e6e;
+}
+
+a.tag:hover
+{
+	color: #bdbdbd;
+}
+
+.ignore-desc
+{
+	position: relative;
+	font-size: 85%;
+	padding-left: 4px;
+	padding-bottom: 4px;
+	padding-right: 4px;
+	padding-top: 4px;
+	line-height: 1.2em;
+}
+
+.content  .form-textbox
+{
+	border-width: 2px;
+	border-style: inset;
+	width: 100%;
+}
+
+.content form
+{
+	padding-right: 10%;
+	padding-left: 10%;
+}
+
+.content textarea
+{
+	border-style: inset;
+	border-width: 2px;
+	width: 100%;
+}
+
+.content form label
+{
+	line-height: 1.2em;
+	font-weight: bold;
+}
+
+.content form .submit-button
+{
+	padding: 5px;
+	clear: both;
+	
+	font-size: 110%;
+}
+
+.content form .form-l-textbox
+{
+	left: 0px;
+	padding: 0px;
+	width: 49%;
+	border-style: inset;
+	border-width: 2px;
+}
+
+.content form .form-r-textbox
+{
+	left: 51%;
+	padding: 0px;
+	clear: both;
+	float: right;
+	width: 49%;
+	border-style: inset;
+	border-width: 2px;
+}
+
+.content form .r-label
+{
+	width: 50%;
+	clear: both;
+	float: right;
+	right: 51%;
+}
+
+.view-tools
+{
+position: relative;
+margin: 2px;
+float: right;
+font-size: small;
+background-repeat: repeat-x;
+color: black;
+font-family: "Lucida Grande","Lucida Sans","Lucida Sans Unicode",Verdana,sans-serif;
+white-space:nowrap;
+list-style-type:none;
+
+}
+
+.view-tools li 
+{
+  margin: 2px;
+  display:inline;
+  float:left;
+  position:relative;
+  top:35px;
+}
+
+.page-controls
+{
+  float: right;
+  position: relative;
+  clear: both;
+}
+
+.field-validation-error
+{
+  color:#FF0000;
+  font-style:italic;    
+}
+
+.stand-out{
+	background-color: #EEE;
+	padding: 10px;
+	margin-top: 10px;
+	margin-right: 20px;
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;
+}

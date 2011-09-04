@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+    <head>
+        <LINK REL=StyleSheet HREF="{{ url_for('static', filename='main.css') }}" TYPE="text/css" MEDIA=screen>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" /></script>
+        <title>DaemonAlert.me</title>
+    </head>
+    <body>
+        <div class="header">
+            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" class="logo" /></a>
+            <ul class="navlinks">
+            	<li><a href="#">Source</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+       {% block body %} {% endblock %}	
+    </body>    
+</html> 
