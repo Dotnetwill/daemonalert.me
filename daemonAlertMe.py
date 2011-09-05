@@ -57,7 +57,9 @@ class UriMonitor():
         checks_to_run = self.db_session.query(UriCheck).from_statement("SELECT UriChecks.id, url, check_type, check_options, last_check FROM UriChecks JOIN Alerts AS a ON UriChecks.id = a.check_id").all()
         for check in checks_to_run:
             print 'about to run check on ' + check.url
-            hash_check = HashCheck(check.check_options)
+            check.last_check = datetime.datetime.now
+            
+            hash_check = HashCheck(check)
             url_stream = urllib2.urlopen(check.url)
             if hash_check.has_changes(url_stream):
                 print 'hash changes requesting alert sent'
