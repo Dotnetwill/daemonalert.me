@@ -39,9 +39,12 @@ class HashCheck():
     def __init__(self, uri_check):
         self.uri_check = uri_check
     
-    def has_changes(self, url_stream):
+    def get_hash(self, url_stream):
         page = url_stream.read()
-        hash = hashlib.md5(page).hexdigest()
+        return hashlib.md5(page).hexdigest()
+
+    def has_changes(self, url_stream):
+        hash = self.get_hash(url_stream)
         if not hash == self.uri_check.check_options:
             self.uri_check.check_options = hash
             return True
@@ -58,12 +61,14 @@ class UriMonitor():
         for check in checks_to_run:
             print 'about to run check on ' + check.url
             check.last_check = datetime.datetime.now
-            
-            hash_check = HashCheck(check)
-            url_stream = urllib2.urlopen(check.url)
-            if hash_check.has_changes(url_stream):
-                print 'hash changes requesting alert sent'
-                self.alerter.send_alerts_for_id(check.id, check.url)
+            try:
+                hash_check = HashCheck(check)
+                url_stream = urllib2.urlopen(check.url)
+                if hash_check.has_changes(url_stream):
+                    print 'hash changes requesting alert sent'
+                    self.alerter.send_alerts_for_id(check.id, check.url)
+            except urllib2.URLError, e:
+                print e.reason
 
 class EmailAlert():
     NO_LIMIT = -1

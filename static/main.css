@@ -160,6 +160,7 @@ a.tag:hover
 	padding-right: 4px;
 	padding-top: 4px;
 	line-height: 1.2em;
+	text-align: right;
 }
 
 .content  .form-textbox

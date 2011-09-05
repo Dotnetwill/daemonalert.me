@@ -1,0 +1,20 @@
+
+<html>
+	<body>	
+    	<h2>Watch this for me</h2>
+          <form action="/add" method="post">
+             <p><label for="Url">Url</label></p>
+             	<p><a href="{{ check.url }}">{{ check.url }}</a></p>
+             <br />
+              <p><label for="Email">When it changes email</label> 
+             <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="" /> </p>
+             <br />
+             <p><label for="AlertTimes">Alert Me</label> </p>
+            <p><input type="radio" name="AlertTimes" value="1" checked="" style="padding: 10px" />Just of the next change</p>
+			<p><input type="radio" name="AlertTimes" value="0" style="padding: 10px" />Every change till I disable it </p>
+            <br /> 
+            <input type="hidden" value="{{ check.url }}" name="id" /> 
+            <p><input type="submit" class="submit-button" value="Add Alert" /></p>
+          </form>
+      </body>
+ </html>

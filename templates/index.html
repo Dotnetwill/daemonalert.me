@@ -3,7 +3,8 @@
 <div class="aboutbox"><h2>About us</h2><p>Constantly refreshing a page waiting for it to change?  Check a site every morning to see if registration has opened?  Well why not let us do that for you!</p><br /> 
 	<p>We will monitor a url for you and notify you if there is any change to the page via email or twitter</p>
 </div>
-    <div class="content">cv    v
+    <div class="content">
+    	<div class="stand-out">
     	<h2>Watch this for me</h2>
           <form action="/add" method="post">
              <p><label for="Url">Url</label> 
@@ -25,8 +26,8 @@
         	 
 {% if checks|length > 0 %}
 {% for check in checks %}
-        <div class="ignore-result"><p class="ignore-name"><a href="{{ check.url }}">{{ check.url }}</a> <b>Last checked:</b> {{ check.last_check.strftime('%h:%m %d %m %y') }}</p>
-                <p class="ignore-desc"><a href="#"><img src="{{ url_for('static', filename='watch_small.png') }}" />Alert me about changes</a></p>
+        <div class="ignore-result"><p class="ignore-name"><a href="{{ check.url }}">{{ check.url }}</a> <span style="float: right"><b>Last checked:</b> {{ check.last_check.strftime('%H:%M %d-%m-%y') }}</span></p>
+                <p class="ignore-desc"><a href="{{ url_for('add_alert', id=check.id) }}" class="add-alert"><img src="{{ url_for('static', filename='watch_small.png') }}" />Alert me about changes</a></p>
                
         </div>
 {% endfor %}
@@ -37,5 +38,22 @@
     </div>
 {% endif %}
         </div>
-        
+        <script type="text/javascript">
+    $(function (){
+        $('a.add-alert').click(function() {
+            var url = this.href;
+            var dialog = $('<div style="display:hidden"></div>').appendTo('body');
+            // load remote content
+            dialog.load(
+                url, 
+                {},
+                function (responseText, textStatus, XMLHttpRequest) {
+                    dialog.dialog();
+                }
+            );
+            //prevent the browser to follow the link
+            return false;
+        });
+    });
+    </script>
 {% endblock %}

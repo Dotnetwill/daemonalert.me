@@ -1,9 +1,12 @@
-from flask import Flask, render_template, redirect, request
-from daemonAlertMe import get_session, UriCheck, Alert
+from flask import Flask, render_template, redirect, request, abort
+from daemonAlertMe import get_session, UriCheck, Alert, HashCheck
+import urllib2
 
 app = Flask(__name__)
 
-
+def create_app():    
+    app.db = get_session()
+    return app
 
 @app.teardown_request
 def shutdown_session(exception=None):
@@ -15,8 +18,11 @@ def index():
     return render_template('index.html', checks = checks)
 
 @app.route('/add', methods=['POST'])
-def add_alert():
+def add_check_and_alert():
     check = create_or_get_uri_check(app.db, request.form['Url'])
+    
+    if check == None:
+        abort(500)
     
     alert = Alert()
     alert.check_id = check.id
@@ -28,6 +34,12 @@ def add_alert():
     app.db.flush()
     
     return redirect('/')
+
+@app.route('/add-alert/<id>')
+def add_alert(id):
+    check = app.db.query(UriCheck).filter(UriCheck.id == id).one()
+    return render_template('add_alert.html', check = check)
+
 def create_or_get_uri_check(db, url):
     if not (url.startswith('http://') or url.startswith('https://')):
         url = 'http://' + url
@@ -38,8 +50,18 @@ def create_or_get_uri_check(db, url):
     else:
         check = UriCheck()    
         check.url = url 
+        check.check_options 
+        
+        first_monitor = HashCheck(check)
+        try:
+            url_stream = urllib2.urlopen(check.url)
+            first_monitor.has_changes(url_stream)
+        except urllib2.URLError, e:
+            print e.reason
+            return None
+        
         return check
     
 if __name__ == '__main__':
-    app.db = get_session()
+    create_app()
     app.run(debug=True)
