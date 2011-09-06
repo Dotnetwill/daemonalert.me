@@ -35,7 +35,7 @@ def add_check_and_alert():
     
     return redirect('/')
 
-@app.route('/add-alert/<id>')
+@app.route('/add-alert/<id>', methods=['GET', 'POST'])
 def add_alert(id):
     check = app.db.query(UriCheck).filter(UriCheck.id == id).one()
     return render_template('add_alert.html', check = check)
