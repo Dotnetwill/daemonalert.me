@@ -1,5 +1,7 @@
 *.pyc
-
+*.log
+*.db
+*.swp
 /bin
 /lib
 /include

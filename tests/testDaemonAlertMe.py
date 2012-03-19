@@ -2,6 +2,7 @@ import unittest
 import urllib2
 import daemonAlertMe
 import smtplib
+import datetime
 from daemonAlertMe.models import UriCheck, Alert, init_model
 from daemonAlertMe.monitor import HashCheck,  UriMonitor, EmailAlert
 from daemonAlertMe.site import create_app
@@ -35,12 +36,15 @@ class FakeAlerter():
 class FakeCheck():
     last_instance = None
     change_return_value = False
+    set_hash = ''
     def __init__(self, checkOptions):
         FakeCheck.last_instance = self
         self.has_changes_called = False
-    
+        self.uri_check = checkOptions
+
     def has_changes(self, url_stream):
         self.has_changes_called = True
+        self.uri_check.check_options = self.set_hash
         return FakeCheck.change_return_value
     
 class FakeUrlReader():
@@ -183,6 +187,19 @@ class UriMonitorTests(DbInMemoryTest):
         self.assertTrue(self.alerter.alert_called)
         self.assertEqual(self.alerter.alert_for_id, expected_check_id)
         self.assertEqual(self.alerter.alert_url, expected_url)
+    
+    def test_run_all_1_check_with_hash_change_new_hash_and_time_saved(self):
+        expected_check_id = 1
+        expected_url = 'google.com'
+        self.add_with_one_uri_check_with_id_and_no_alerts(id = expected_check_id, url=expected_url)
+        self.add_alert_for_uri_check_with_id(uri_check_id = expected_check_id)
+        FakeCheck.change_return_value = True
+        FakeCheck.set_hash = 'updated_hash'
+
+        self.monitor.run_all()
+        
+        check = self.cur_session.query(UriCheck).filter_by(id = expected_check_id).one() 
+        assert 'updated_hash' == check.check_options
         
     def test_run_all_1_check_with_alert_check_no_changed_alert_not_sent(self):
         expected_check_id = 1
