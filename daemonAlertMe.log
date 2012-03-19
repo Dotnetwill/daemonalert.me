@@ -1,0 +1,218 @@
+2012-03-16 17:18:00,201 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-16 17:18:00,221 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-16 17:18:00,225 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-16 17:18:00,236 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-16 17:18:00,240 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-16 17:20:10,155 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-16 17:20:10,165 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-16 17:20:10,169 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-16 17:20:10,180 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-16 17:20:10,184 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 03:51:13,564 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 03:51:13,575 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 03:51:13,580 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 03:51:13,591 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 03:51:13,596 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 04:06:25,381 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 04:06:25,391 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 04:06:25,396 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 04:06:25,407 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 04:06:25,413 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 04:06:25,436 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 04:06:25,436 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 04:06:25,440 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 04:06:25,443 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 04:06:25,446 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 04:06:25,450 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 07:20:53,243 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:20:53,252 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 07:20:53,257 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:20:53,268 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:20:53,273 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:20:53,530 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:20:53,530 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 07:20:53,534 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:20:53,537 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:20:53,540 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:20:53,544 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 07:21:45,371 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:21:45,381 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 07:21:45,385 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:21:45,396 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:21:45,400 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:21:45,499 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:21:45,499 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 07:21:45,503 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:21:45,506 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:21:45,509 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:21:45,513 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 07:22:01,609 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:22:01,619 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 07:22:01,623 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:22:01,634 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:22:01,640 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:22:01,728 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:22:01,728 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 07:22:01,731 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:22:01,735 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:22:01,738 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:22:01,741 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 07:23:24,576 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:23:24,586 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 07:23:24,591 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:23:24,602 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:23:24,607 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:23:24,711 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:23:24,711 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 07:23:24,716 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:23:24,720 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:23:24,725 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:23:24,730 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 07:26:43,095 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:43,106 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 07:26:43,112 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:43,127 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:43,133 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:43,240 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:43,240 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 07:26:43,245 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:43,250 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:43,255 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:43,260 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 07:26:52,415 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:52,425 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 07:26:52,431 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:52,442 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:52,448 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:26:52,541 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:52,541 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 07:26:52,545 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:52,548 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:52,552 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:26:52,555 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 07:27:02,933 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:27:02,943 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 07:27:02,948 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:27:02,958 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:27:02,963 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 07:27:03,054 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:27:03,054 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 07:27:03,058 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:27:03,061 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:27:03,065 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 07:27:03,069 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 10:44:40,661 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 10:44:40,677 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 10:44:40,681 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 10:44:40,692 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 10:44:40,699 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 10:44:40,865 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 10:44:40,866 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 10:44:40,869 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 10:44:40,873 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 10:44:40,876 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 10:44:40,879 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 13:56:22,886 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 13:56:22,896 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 13:56:22,901 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 13:56:22,912 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 13:56:22,918 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 13:56:23,231 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 13:56:23,231 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 13:56:23,235 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 13:56:23,238 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 13:56:23,241 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 13:56:23,245 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-17 14:00:13,060 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 14:00:13,076 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-17 14:00:13,084 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 14:00:13,106 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 14:00:13,114 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-17 14:00:13,261 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 14:00:13,261 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-17 14:00:13,269 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 14:00:13,277 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 14:00:13,284 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-17 14:00:13,291 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-18 03:20:54,306 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:20:54,329 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-18 03:20:54,338 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:20:54,358 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:20:54,368 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:20:54,651 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:20:54,651 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-18 03:20:54,661 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:20:54,668 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:20:54,674 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:20:54,682 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-18 03:23:47,105 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:23:47,120 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-18 03:23:47,129 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:23:47,150 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:23:47,159 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-18 03:23:47,335 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:23:47,336 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-18 03:23:47,343 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:23:47,350 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:23:47,357 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-18 03:23:47,364 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-19 15:53:48,840 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:53:48,865 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-19 15:53:48,876 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:53:48,903 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:53:48,913 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:54:27,218 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:54:27,234 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-19 15:54:27,246 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:54:27,273 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:54:27,283 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:54:27,348 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:54:27,348 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-19 15:54:27,356 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:54:27,365 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:54:27,373 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:54:27,382 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-19 15:57:39,669 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:57:39,685 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-19 15:57:39,698 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:57:39,724 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:57:39,734 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 15:57:40,002 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:57:40,003 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-19 15:57:40,011 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:57:40,020 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:57:40,028 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 15:57:40,037 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-19 16:00:52,672 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:00:52,687 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-19 16:00:52,699 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:00:52,725 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:00:52,735 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:00:52,906 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:00:52,907 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-19 16:00:52,916 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:00:52,924 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:00:52,933 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:00:52,941 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-19 16:09:20,667 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:20,683 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-19 16:09:20,694 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:20,720 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:20,731 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:20,921 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:20,922 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-19 16:09:20,930 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:20,943 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:20,952 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:20,962 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me
+2012-03-19 16:09:23,679 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:23,694 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert target@test.com
+2012-03-19 16:09:23,705 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:23,732 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:23,742 - monitor.py :: #60 :: send_alerts_for_id - INFO - found someone to alert test@test.com
+2012-03-19 16:09:23,910 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:23,910 - monitor.py :: #46 :: run_all - INFO - hash changes requesting alert sent
+2012-03-19 16:09:23,918 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:23,926 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:23,934 - monitor.py :: #40 :: run_all - INFO - about to run check on google.com
+2012-03-19 16:09:23,943 - monitor.py :: #40 :: run_all - INFO - about to run check on open_me

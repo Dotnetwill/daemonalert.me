@@ -2,9 +2,10 @@ import unittest
 import urllib2
 import daemonAlertMe
 import smtplib
-from daemonAlertMe import HashCheck, init_engine, UriCheck, Alert, UriMonitor, EmailAlert
-from sqlalchemy.orm import sessionmaker , scoped_session
-import site
+from daemonAlertMe.models import UriCheck, Alert, init_model
+from daemonAlertMe.monitor import HashCheck,  UriMonitor, EmailAlert
+from daemonAlertMe.site import create_app
+import daemonAlertMe.models
 
 class FakeSMTP():
     instance = None
@@ -84,15 +85,10 @@ class HashCheckTests(unittest.TestCase):
         self.assertEqual(uri_check.check_options, HashCheckTests.md_hash_page)
         
 class DbInMemoryTest(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls._engine = init_engine('sqlite:///:memory:')
-        cls.Session = sessionmaker(autocommit=True,
-                                   autoflush=True,
-                                   bind=cls._engine)
-        
     def setUp(self):
-        self.cur_session = self.Session()
+        daemonAlertMe.config.SQL_CONNECTION = u'sqlite:///::memory::'
+        init_model()
+        self.cur_session = daemonAlertMe.models.Session()
         self.setup_for_test()
         
     def tearDown(self):
@@ -130,12 +126,12 @@ class UriMonitorTests(DbInMemoryTest):
         urllib2.urlopen = self.fake_url_reader.open
         
         #patch out hashcheck class
-        self.old_hash_check = daemonAlertMe.HashCheck
-        daemonAlertMe.HashCheck = FakeCheck
+        self.old_hash_check = daemonAlertMe.monitor.HashCheck
+        daemonAlertMe.monitor.HashCheck = FakeCheck
         
     def clean_up_after_test(self):
         #Restore hashcheck class
-        daemonAlertMe.HashCheck = self.old_hash_check
+        daemonAlertMe.monitor.HashCheck = self.old_hash_check
         
         #Restore urlopen from patch
         urllib2.urlopen = self.patched_openurl
@@ -297,19 +293,25 @@ class EmailAlertTests(DbInMemoryTest):
 
 class SiteTests(DbInMemoryTest):
     def setup_for_test(self):
-        site.app.db = scoped_session(self.Session) 
-        self.cur_session = site.app.db
-        site.app.config['TESTING'] = True
-        self.app = site.app.test_client()
+        self._site = create_app()
+        self.cur_session = self._site.db
+        self._site.config['TESTING'] = True
+        self.app = self._site.test_client()
+        #Patch out urlopen
+        self.fake_url_reader = FakeUrlReader()
+        self.patched_openurl = urllib2.urlopen
         
+        urllib2.urlopen = self.fake_url_reader.open
+        
+
     def clean_up_after_test(self):
-        pass
-    
+        urllib2.urlopen = self.patched_openurl
+
     def test_index_no_entries_empty_message_shown(self):
         res = self.app.get('/') 
         assert "Sorry, we're empty at the moment!" in res.data
     
-    def test_index_2_entries_both_urls_shown(self):
+    def test_index_entries_both_urls_shown(self):
         expected_url1 = 'google.com'
         
         self.add_with_one_uri_check_with_id_and_no_alerts(id = 0, url = expected_url1)
@@ -341,7 +343,7 @@ class SiteTests(DbInMemoryTest):
       
         self.app.post('/add', data=dict(Url=expected_url, Email='test@domain.com', AlertTimes=1)) 
        
-        checks_in_db = self.cur_session.query(UriCheck).all()
+        checks_in_db = self._site.db.query(UriCheck).all()
         assert checks_in_db[0].url == 'http://' + expected_url
     
     def test_add_1_entry_starts_with_https_no_http_prepensws(self):

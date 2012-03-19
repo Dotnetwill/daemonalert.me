@@ -1,16 +1,19 @@
 from flask import Flask, render_template, redirect, request, abort
-from daemonAlertMe import get_session, UriCheck, Alert, HashCheck
+from daemonAlertMe.models import UriCheck, Alert, init_model 
+from daemonAlertMe.monitor import HashCheck
 import urllib2
+import daemonAlertMe.models
 
 app = Flask(__name__)
 
-def create_app():    
-    app.db = get_session()
+def create_app():
+    init_model()
+    app.db = daemonAlertMe.models.Session()
     return app
 
 @app.teardown_request
 def shutdown_session(exception=None):
-    app.db.remove()
+    daemonAlertMe.models.Session.remove()
 
 @app.route('/')
 def index():
