@@ -2,37 +2,40 @@ import unittest
 import urllib2
 import daemonAlertMe
 import smtplib
-import datetime
 from daemonAlertMe.models import UriCheck, Alert, init_model
 from daemonAlertMe.monitor import HashCheck,  UriMonitor, EmailAlert
 from daemonAlertMe.site import create_app
 import daemonAlertMe.models
 
+
 class FakeSMTP():
     instance = None
+
     def __init__(self, server_name):
         FakeSMTP.instance = self
         self.sendmail_called = False
         self.target_email_sent_to = None
         self.sent_email = None
-        
+ 
     def sendmail(self, server, target_email, email):
         self.sendmail_called = True
         self.target_email_sent_to = target_email
         self.sent_email = email
-        
+ 
     def __getattr__(self, name):
         return lambda a = None, b = None: False
+
 
 class FakeAlerter():
     def __init__(self):
         self.alert_called = False
-        
+ 
     def send_alerts_for_id(self, check_id, url):
         self.alert_called = True
         self.alert_for_id = check_id
         self.alert_url = url
-            
+
+
 class FakeCheck():
     last_instance = None
     change_return_value = False
@@ -269,23 +272,23 @@ class EmailAlertTests(DbInMemoryTest):
         expected_url = 'google.com'
         
         self.add_with_one_uri_check_with_id_and_no_alerts(uri_check_id)
-        self.add_alert_for_uri_check_with_id(uri_check_id, num_of_times = 1)
+        self.add_alert_for_uri_check_with_id(uri_check_id, num_of_times = 2, num_of_times_alerted=0)
         
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
         
         self.assertEquals(self.cur_session.query(Alert).all()[0].num_of_times_alerted, 1)
-        
-    def test_send_alerts_for_id_1_at_alert_count_msg_not_sent(self):
+ 
+    def test_send_alerts_for_id_1_reaches_message_count_alert_deleted(self):
         uri_check_id = 1
         expected_url = 'google.com'
         
         self.add_with_one_uri_check_with_id_and_no_alerts(uri_check_id)
-        self.add_alert_for_uri_check_with_id(uri_check_id, num_of_times = 1, num_of_times_alerted = 1)
+        self.add_alert_for_uri_check_with_id(uri_check_id, num_of_times = 1, num_of_times_alerted = 0)
         
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
 
-        self.assertIsNone(FakeSMTP.instance)
-        
+        assert self.cur_session.query(Alert).count() == 0
+
     def test_send_alerts_for_id_1_over_alert_count_msg_not_sent(self):
         uri_check_id = 1
         expected_url = 'google.com'

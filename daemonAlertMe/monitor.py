@@ -60,6 +60,9 @@ class EmailAlert(object):
             log.info('found someone to alert ' + alert.email)
             self._create_email(alert, url)
             alert.num_of_times_alerted = alert.num_of_times_alerted + 1
+
+            if not alert.num_of_times_alerted == self.NO_LIMIT and alert.num_of_times_alerted >= alert.num_of_times:
+                self.db_session.delete(alert)
        
             
             
@@ -97,13 +100,3 @@ class EmailAlert(object):
         s.login(SMTP_SERVER_UNAME, SMTP_SERVER_PWD)
         s.sendmail(SMTP_SERVER_UNAME, target_email, email.as_string())
         s.quit()
-
-#if __name__ == '__main__':
-#    a_session = get_session(init_engine(config.SQL_CONNECTION))()
-#    alerter = EmailAlert(a_session)
-#    #Run app
-#    UriMonitor(a_session, alerter).run_all()
-    
-    #teardown
-#    a_session.remove()
-    
