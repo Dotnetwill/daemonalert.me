@@ -1,0 +1,7 @@
+Hi,
+
+The URL {{ url }}  you asked us to monitor has changed
+
+Regards 
+
+DaemonAlert.Me team

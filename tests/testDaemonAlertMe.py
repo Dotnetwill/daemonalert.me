@@ -1,32 +1,29 @@
 import unittest
 import urllib2
 import daemonAlertMe
-import smtplib
 from daemonAlertMe.models import UriCheck, Alert, init_model
 from daemonAlertMe.monitor import HashCheck,  UriMonitor, EmailAlert
 from daemonAlertMe.site import create_app
 import daemonAlertMe.models
+import daemonAlertMe.monitor as monitor
 
 
-class FakeSMTP():
-    instance = None
+class FakeEmailer(object):
+    def __init__(self):
+        self.send_called = False
+        self.send_args = None
+        self.sent_to = None
+        self.with_template = None
+        self.sent_with_subject = None
 
-    def __init__(self, server_name):
-        FakeSMTP.instance = self
-        self.sendmail_called = False
-        self.target_email_sent_to = None
-        self.sent_email = None
- 
-    def sendmail(self, server, target_email, email):
-        self.sendmail_called = True
-        self.target_email_sent_to = target_email
-        self.sent_email = email
- 
-    def __getattr__(self, name):
-        return lambda a = None, b = None: False
+    def send_email(self, send_to, template, subject, **kwargs):
+        self.send_called = True
+        self.send_args = kwargs
+        self.sent_to = send_to
+        self.with_template = template
+        self.sent_with_subject = subject
 
-
-class FakeAlerter():
+class FakeAlerter(object):
     def __init__(self):
         self.alert_called = False
  
@@ -36,7 +33,7 @@ class FakeAlerter():
         self.alert_url = url
 
 
-class FakeCheck():
+class FakeCheck(object):
     last_instance = None
     change_return_value = False
     set_hash = ''
@@ -218,32 +215,31 @@ class UriMonitorTests(DbInMemoryTest):
 class EmailAlertTests(DbInMemoryTest):
     def setup_for_test(self):
         self.email_alert = EmailAlert(self.cur_session)
-        self.patched_out_smtp_lib = smtplib.SMTP
-        smtplib.SMTP = FakeSMTP
-        
+        self.patched_out_sender = monitor.email_sender
+        monitor.email_sender = FakeEmailer()
+
     def clean_up_after_test(self):
-        smtplib.SMTP = self.patched_out_smtp_lib
-        FakeSMTP.instance = None
-        
+        monitor.email_sender = self.patched_out_sender
+
     def test_send_alerts_for_id_no_alert_nothing_sent(self):
         uri_check_id = 1
         self.add_with_one_uri_check_with_id_and_no_alerts(uri_check_id)
-        
+
         self.email_alert.send_alerts_for_id(uri_check_id, '')
 
-        self.assertIsNone(FakeSMTP.instance)
-        
+        assert not  monitor.email_sender.send_called
+
     def test_send_alerts_for_id_1_alert_msg_sent(self):
         uri_check_id = 1
         expected_target_email = 'target@test.com'
-        
+
         self.add_with_one_uri_check_with_id_and_no_alerts(uri_check_id)
         self.add_alert_for_uri_check_with_id(uri_check_id, expected_target_email)
-        
+
         self.email_alert.send_alerts_for_id(uri_check_id, '')
-        
-        self.assertTrue(FakeSMTP.instance.sendmail_called)
-        self.assertEqual(FakeSMTP.instance.target_email_sent_to, expected_target_email)
+
+        assert monitor.email_sender.send_called
+        assert monitor.email_sender.sent_to == expected_target_email 
         
     def test_send_alerts_for_id_1_alert_msg_sent_with_url_in(self):
         uri_check_id = 1
@@ -253,20 +249,21 @@ class EmailAlertTests(DbInMemoryTest):
         self.add_alert_for_uri_check_with_id(uri_check_id)
         
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
-        
-        self.assertTrue(FakeSMTP.instance.sent_email.find(expected_url) > 1)
+
+        assert monitor.email_sender.send_args['url'] == expected_url
+        #self.assertTrue(FakeSMTP.instance.sent_email.find(expected_url) > 1)
         
     def test_send_alerts_for_id_1_under_alert_count_msg_sent(self):
         uri_check_id = 1
         expected_url = 'google.com'
-        
+
         self.add_with_one_uri_check_with_id_and_no_alerts(uri_check_id)
         self.add_alert_for_uri_check_with_id(uri_check_id, num_of_times = 1)
-        
+
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
-        
-        self.assertTrue(FakeSMTP.instance.sendmail_called)
-        
+
+        assert monitor.email_sender.send_called 
+
     def test_send_alerts_for_id_1_alert_count_incremented_and_commited(self):
         uri_check_id = 1
         expected_url = 'google.com'
@@ -298,7 +295,7 @@ class EmailAlertTests(DbInMemoryTest):
         
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
         
-        self.assertIsNone(FakeSMTP.instance)
+        assert not monitor.email_sender.send_called 
         
     def test_send_alerts_for_id_1_unlimited_alerts_msg_sent(self):
         uri_check_id = 1
@@ -306,10 +303,10 @@ class EmailAlertTests(DbInMemoryTest):
         
         self.add_with_one_uri_check_with_id_and_no_alerts(uri_check_id)
         self.add_alert_for_uri_check_with_id(uri_check_id, num_of_times = EmailAlert.NO_LIMIT, num_of_times_alerted = 2)
-        
+
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
-        
-        self.assertTrue(FakeSMTP.instance.sendmail_called)
+
+        assert monitor.email_sender.send_called 
 
 class SiteTests(DbInMemoryTest):
     def setup_for_test(self):
@@ -320,7 +317,7 @@ class SiteTests(DbInMemoryTest):
         #Patch out urlopen
         self.fake_url_reader = FakeUrlReader()
         self.patched_openurl = urllib2.urlopen
-        
+
         urllib2.urlopen = self.fake_url_reader.open
         
 

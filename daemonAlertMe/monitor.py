@@ -1,16 +1,13 @@
 import urllib2
 import hashlib
 import datetime
-import smtplib
-from daemonAlertMe import log
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from marrja_mail import MarrjaMailer
+from daemonAlertMe import log, config
 from daemonAlertMe.models import UriCheck, Alert 
 
-SMTP_SERVER = 'localhost'
-SMTP_SERVER_UNAME = ''
-SMTP_SERVER_PWD = ''
-SENDER_EMAIL = 'alert@daemonalert.me'
+email_sender = MarrjaMailer('daemonAlertMe', server=config.EMAIL_HOST, 
+        username=config.EMAIL_USER, password=config.EMAIL_PWD, 
+        default_sender=config.EMAIL_SENDER)
 
 
 class HashCheck(object):
@@ -63,40 +60,8 @@ class EmailAlert(object):
 
             if not alert.num_of_times_alerted == self.NO_LIMIT and alert.num_of_times_alerted >= alert.num_of_times:
                 self.db_session.delete(alert)
-       
-            
-            
-    def _create_email(self, alert, url):
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = 'Alert: URL Changed!'
-        msg['To'] = alert.email
-        msg['From'] = SENDER_EMAIL
-        
-        text = "Hi\nThe URL you asked us to monitor has change: " +  url
-        html = """\
-        <html>
-          <head></head>
-          <body>
-            <p>Hi!<br>
-               
-               The URL you asked us to monitor has change:<a href="{0}">{0}</a>.
-            </p>
-          </body>
-        </html>
-        """.format(url)
-        plain_part = MIMEText(text, 'plain')
-        html_part = MIMEText(html, 'html')
-        
-        msg.attach(plain_part)
-        msg.attach(html_part)
-      
-        self._send_mail(msg, alert.email)
 
-    def _send_mail(self, email, target_email):
-        s = smtplib.SMTP(SMTP_SERVER)
-        s.ehlo()
-        s.starttls()
-        s.ehlo()
-        s.login(SMTP_SERVER_UNAME, SMTP_SERVER_PWD)
-        s.sendmail(SMTP_SERVER_UNAME, target_email, email.as_string())
-        s.quit()
+    def _create_email(self, alert, url):
+        email_sender.send_email(alert.email,'alert', 'Alert: URL Change', 
+                url=url)
+

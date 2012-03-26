@@ -19,6 +19,7 @@ class DefaultConfig(object):
     EMAIL_HOST = u''
     EMAIL_USER = u''
     EMAIL_PWD = u''
+    EMAIL_SENDER = u'info@DaemonAlert.me'
 
 config = DefaultConfig()
 
