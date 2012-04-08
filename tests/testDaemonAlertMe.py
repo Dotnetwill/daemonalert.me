@@ -106,7 +106,8 @@ class DbInMemoryTest(unittest.TestCase):
         uri_check.check_options = ''
         uri_check.url = url
         self.cur_session.add(uri_check)
-    
+        self.cur_session.flush()
+
     def add_alert_for_uri_check_with_id(self, uri_check_id=1, target_email='test@test.com', num_of_times = 1, num_of_times_alerted=0):
         alert = Alert()
         alert.check_id = uri_check_id
@@ -114,6 +115,7 @@ class DbInMemoryTest(unittest.TestCase):
         alert.num_of_times = num_of_times
         alert.num_of_times_alerted = num_of_times_alerted
         self.cur_session.add(alert)
+        self.cur_session.flush()
 
 class UriMonitorTests(DbInMemoryTest):
     def setup_for_test(self):
@@ -311,7 +313,6 @@ class EmailAlertTests(DbInMemoryTest):
 class SiteTests(DbInMemoryTest):
     def setup_for_test(self):
         self._site = create_app()
-        self.cur_session = self._site.db
         self._site.config['TESTING'] = True
         self.app = self._site.test_client()
         #Patch out urlopen
@@ -323,7 +324,7 @@ class SiteTests(DbInMemoryTest):
 
     def clean_up_after_test(self):
         urllib2.urlopen = self.patched_openurl
-
+        daemonAlertMe.models.Session.remove()
     def test_index_no_entries_empty_message_shown(self):
         res = self.app.get('/') 
         assert "Sorry, we're empty at the moment!" in res.data
@@ -360,7 +361,7 @@ class SiteTests(DbInMemoryTest):
       
         self.app.post('/add', data=dict(Url=expected_url, Email='test@domain.com', AlertTimes=1)) 
        
-        checks_in_db = self._site.db.query(UriCheck).all()
+        checks_in_db = self.cur_session.query(UriCheck).all()
         assert checks_in_db[0].url == 'http://' + expected_url
     
     def test_add_1_entry_starts_with_https_no_http_prepensws(self):

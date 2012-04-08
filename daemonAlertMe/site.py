@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, abort
+from flask import Flask, render_template, redirect, request, abort, g
 from daemonAlertMe.models import UriCheck, Alert, init_model 
 from daemonAlertMe.monitor import HashCheck
 import urllib2
@@ -8,8 +8,11 @@ app = Flask(__name__)
 
 def create_app():
     init_model()
-    app.db = daemonAlertMe.models.Session()
     return app
+
+@app.before_request
+def start_request():
+    g.db = daemonAlertMe.models.Session()
 
 @app.teardown_request
 def shutdown_session(exception=None):
@@ -17,12 +20,12 @@ def shutdown_session(exception=None):
 
 @app.route('/')
 def index():
-    checks = app.db.query(UriCheck).all()
+    checks = g.db.query(UriCheck).all()
     return render_template('index.html', checks = checks)
 
 @app.route('/add', methods=['POST'])
 def add_check_and_alert():
-    check = create_or_get_uri_check(app.db, request.form['Url'])
+    check = create_or_get_uri_check(g.db, request.form['Url'])
     
     if check == None:
         abort(500)
@@ -32,15 +35,15 @@ def add_check_and_alert():
     alert.check = check
     alert.email = request.form['Email']
     alert.num_of_times = request.form['AlertTimes']
-    app.db.add(alert)
+    g.db.add(alert)
     
-    app.db.flush()
+    g.db.flush()
     
     return redirect('/')
 
 @app.route('/add-alert/<id>', methods=['GET', 'POST'])
 def add_alert(id):
-    check = app.db.query(UriCheck).filter(UriCheck.id == id).one()
+    check = g.db.query(UriCheck).filter(UriCheck.id == id).one()
     return render_template('add_alert.html', check = check)
 
 def create_or_get_uri_check(db, url):
@@ -65,6 +68,4 @@ def create_or_get_uri_check(db, url):
         
         return check
     
-if __name__ == '__main__':
-    create_app()
-    app.run(debug=True)
+

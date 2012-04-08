@@ -1,5 +1,5 @@
 from fabric.api import task
-from daemonAlertMe import monitor, models
+from daemonAlertMe import monitor, models, site
 
 @task
 def run_check():
@@ -9,7 +9,8 @@ def run_check():
 
     #Run app
     monitor.UriMonitor(a_session, alerter).run_all()
-    
+    a_session.flush()
     #teardown
     models.Session.remove()
- 
+
+
