@@ -15,7 +15,7 @@
              <br />
              <p><label for="AlertTimes">Alert Me</label> </p>
             <p><input type="radio" name="AlertTimes" value="1" checked="" style="padding: 10px" />Just of the next change</p>
-			<p><input type="radio" name="AlertTimes" value="0" style="padding: 10px" />Every change till I disable it </p>
+            <p><input type="radio" name="AlertTimes" value="0" style="padding: 10px" />Every change till I disable it </p>
             <br />         
             <p><input type="submit" class="submit-button" value="Add Alert" /></p>
           </form>
@@ -23,12 +23,11 @@
         <br /> <br />
         <div class="title"><h2>Latest Monitored Urls</h2>
         <div id="results">
-        	 
+
 {% if checks|length > 0 %}
 {% for check in checks %}
-        <div class="ignore-result"><p class="ignore-name"><a href="{{ check.url }}">{{ check.url }}</a> <span style="float: right"><b>Last checked:</b> {{ check.last_check.strftime('%H:%M %d-%m-%y') }}</span></p>
-                <p class="ignore-desc"><a href="{{ url_for('add_alert', id=check.id) }}" class="add-alert"><img src="{{ url_for('static', filename='watch_small.png') }}" />Alert me about changes</a></p>
-               
+        <div class="ignore-result"><p class="ignore-name"><a href="{{ check.url }}" class="url_watched" >{{ check.url }}</a> <span style="float: right"><b>Last checked:</b> {{ check.last_check.strftime('%H:%M %d-%m-%y') }}</span></p>
+            <p class="ignore-desc"><a rel="leanModal"  href="#extra-alert" class="add-alert"><img src="{{ url_for('static', filename='watch_small.png') }}" />Alert me about changes</a></p>
         </div>
 {% endfor %}
 {% else %}
@@ -41,19 +40,31 @@
         <script type="text/javascript">
     $(function (){
         $('a.add-alert').click(function() {
-            var url = this.href;
-            var dialog = $('<div style="display:hidden"></div>').appendTo('body');
-            // load remote content
-            dialog.load(
-                url, 
-                {},
-                function (responseText, textStatus, XMLHttpRequest) {
-                    dialog.dialog();
-                }
-            );
-            //prevent the browser to follow the link
-            return false;
+            var container = $(this).parents('.ignore-result');
+            var target = container.find('.url_watched').attr('href');
+            $('#add_alert_url').attr('href', target);
+            $('#add_alert_url').html(target);
+            $('#hidden_url').attr('value', target);
         });
+        $("a[rel*=leanModal]").leanModal(); 
     });
     </script>
+        <div id="extra-alert">
+
+        <h2>Alert Me For:</h2>
+        <br />
+            <form action="/add" method="post">
+                <p><a href="" id="add_alert_url"></a></p>
+                <br />
+                <p><label for="Email">When it changes email</label> 
+                <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="" /> </p>
+                <br />
+                <p><label for="AlertTimes">Alert Me</label> </p>
+                <p><input type="radio" name="AlertTimes" value="1" checked="" style="padding: 10px" />Just of the next change</p>
+                <p><input type="radio" name="AlertTimes" value="0" style="padding: 10px" />Every change till I disable it </p>
+                <br /> 
+                <input type="hidden" value="" name="Url" id="hidden_url" /> 
+                <p><input type="submit" class="submit-button" value="Add Alert" /></p>
+            </form>
+    </div>
 {% endblock %}

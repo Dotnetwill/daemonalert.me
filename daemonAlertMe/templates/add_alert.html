@@ -1,6 +1,5 @@
-	
-    	<h2>Alert Me For:</h2>
-    	<br />
+    <h2>Alert Me For:</h2>
+    <br />
           <form action="/add" method="post">
              <p><label for="Url">Url</label></p>
              	<p><a href="{{ check.url }}">{{ check.url }}</a></p>
@@ -10,9 +9,9 @@
              <br />
              <p><label for="AlertTimes">Alert Me</label> </p>
             <p><input type="radio" name="AlertTimes" value="1" checked="" style="padding: 10px" />Just of the next change</p>
-			<p><input type="radio" name="AlertTimes" value="0" style="padding: 10px" />Every change till I disable it </p>
+            <p><input type="radio" name="AlertTimes" value="0" style="padding: 10px" />Every change till I disable it </p>
             <br /> 
-            <input type="hidden" value="{{ check.url }}" name="id" /> 
+            <input type="hidden" value="{{ check.url }}" name="Url" /> 
             <p><input type="submit" class="submit-button" value="Add Alert" /></p>
           </form>
       </body>

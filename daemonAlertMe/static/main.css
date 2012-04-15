@@ -268,3 +268,19 @@ list-style-type:none;
 	-webkit-box-shadow: 10px 10px 5px #888;
 	box-shadow: 10px 10px 5px #888;
 }
+
+#extra-alert{
+  display: none;
+  background-color: white;
+  padding: 15px;
+}
+#lean_overlay {
+  position: fixed;
+  z-index:100;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+  background: #000;
+  display: none;
+}

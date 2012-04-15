@@ -28,7 +28,7 @@ def add_check_and_alert():
     check = create_or_get_uri_check(g.db, request.form['Url'])
     
     if check == None:
-        abort(500)
+        abort(400)
     
     alert = Alert()
     alert.check_id = check.id
@@ -41,10 +41,18 @@ def add_check_and_alert():
     
     return redirect('/')
 
-@app.route('/add-alert/<id>', methods=['GET', 'POST'])
-def add_alert(id):
-    check = g.db.query(UriCheck).filter(UriCheck.id == id).one()
+@app.route('/add-alert/<uid>', methods=['GET']) 
+def add_alert(uid):
+    try:
+        check = g.db.query(UriCheck).filter(UriCheck.id == uid).one()
+    except:
+        abort(400)
+
     return render_template('add_alert.html', check = check)
+
+@app.route('/add-alert/', methods=['POST'])
+def add_alert_post():
+    pass
 
 def create_or_get_uri_check(db, url):
     if not (url.startswith('http://') or url.startswith('https://')):
