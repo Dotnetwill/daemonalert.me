@@ -16,10 +16,11 @@ log.addHandler(console_handler)
 class DefaultConfig(object):
     CONN_STRING = u'sqlite:///site.db'
     ECHO_SQL = False
-    EMAIL_HOST = u''
+    EMAIL_HOST = u'localhost'
     EMAIL_USER = u''
     EMAIL_PWD = u''
     EMAIL_SENDER = u'info@DaemonAlert.me'
+    FLASK_SECRET_KEY = 'BIG_NIPS'
 
 config = DefaultConfig()
 

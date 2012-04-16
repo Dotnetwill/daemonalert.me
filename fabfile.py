@@ -1,5 +1,5 @@
 from fabric.api import task
-from daemonAlertMe import monitor, models, site
+from daemonAlertMe import monitor, models
 
 @task
 def run_check():

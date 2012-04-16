@@ -32,7 +32,7 @@ class UriMonitor(object):
         self.alerter = alerter
         
     def run_all(self):
-        checks_to_run = self.db_session.query(UriCheck).from_statement("SELECT UriChecks.id, url, check_type, check_options, last_check FROM UriChecks JOIN Alerts AS a ON UriChecks.id = a.check_id").all()
+        checks_to_run = self.db_session.query(UriCheck).from_statement("SELECT UriChecks.id, url, check_type, check_options, last_check FROM UriChecks JOIN Alerts AS a ON UriChecks.id = a.check_id WHERE a.stop = 0").all()
         for check in checks_to_run:
             log.info('about to run check on ' + check.url)
             check.last_check = datetime.datetime.now()
@@ -52,7 +52,7 @@ class EmailAlert(object):
         self.db_session = db_session
         
     def send_alerts_for_id(self, check_id, url):
-        alerts = self.db_session.query(Alert).from_statement("SELECT * FROM Alerts WHERE check_id = :id AND (num_of_times = :no_limit_value OR num_of_times_alerted < num_of_times)").params(id = check_id, no_limit_value = EmailAlert.NO_LIMIT).all()
+        alerts = self.db_session.query(Alert).from_statement("SELECT * FROM Alerts WHERE check_id = :id AND stop=0 AND  (num_of_times = :no_limit_value OR num_of_times_alerted < num_of_times)").params(id = check_id, no_limit_value = EmailAlert.NO_LIMIT).all()
         for alert in alerts:
             log.info('found someone to alert ' + alert.email)
             self._create_email(alert, url)

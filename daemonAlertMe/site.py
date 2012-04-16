@@ -1,10 +1,12 @@
-from flask import Flask, render_template, redirect, request, abort, g
+from flask import Flask, render_template, redirect, request, abort, g, flash
 from daemonAlertMe.models import UriCheck, Alert, init_model 
 from daemonAlertMe.monitor import HashCheck
+from daemonAlertMe import config
 import urllib2
 import daemonAlertMe.models
 
 app = Flask(__name__)
+app.secret_key = config.FLASK_SECRET_KEY
 
 def create_app():
     init_model()
@@ -38,7 +40,8 @@ def add_check_and_alert():
     g.db.add(alert)
     
     g.db.flush()
-    
+    flash('Created Alert!')
+
     return redirect('/')
 
 @app.route('/add-alert/<uid>', methods=['GET']) 
@@ -50,9 +53,10 @@ def add_alert(uid):
 
     return render_template('add_alert.html', check = check)
 
-@app.route('/add-alert/', methods=['POST'])
-def add_alert_post():
-    pass
+@app.route('/delete-alert/<uid>', methods=['GET'])
+def delete_alert(uid):
+    flash('Note implemented yet!')
+    redirect('/')
 
 def create_or_get_uri_check(db, url):
     if not (url.startswith('http://') or url.startswith('https://')):

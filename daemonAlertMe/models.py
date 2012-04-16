@@ -24,7 +24,7 @@ class Alert(Base):
     email = Column(Unicode)
     num_of_times = Column(Integer)
     num_of_times_alerted = Column(Integer, nullable = False, default=0)
-    stop = Column(Boolean) 
+    stop = Column(Boolean, default=False) 
 
 Session = None
     
