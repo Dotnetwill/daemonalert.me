@@ -284,3 +284,26 @@ list-style-type:none;
   background: #000;
   display: none;
 }
+
+.notification-success {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: yellow;
+  font-weight: bold;
+  text-align: center;
+  padding: 3px;
+}
+
+.notification-error {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: red;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 3px;
+}

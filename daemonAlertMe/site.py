@@ -1,7 +1,8 @@
-from flask import Flask, render_template, redirect, request, abort, g, flash
+from flask import Flask, render_template, redirect, request, url_for, g, flash
 from daemonAlertMe.models import UriCheck, Alert, init_model 
 from daemonAlertMe.monitor import HashCheck
-from daemonAlertMe import config
+from daemonAlertMe import config, log
+from sqlalchemy.orm.exc import NoResultFound
 import urllib2
 import daemonAlertMe.models
 
@@ -18,6 +19,7 @@ def start_request():
 
 @app.teardown_request
 def shutdown_session(exception=None):
+    g.db.flush()
     daemonAlertMe.models.Session.remove()
 
 @app.route('/')
@@ -30,7 +32,9 @@ def add_check_and_alert():
     check = create_or_get_uri_check(g.db, request.form['Url'])
     
     if check == None:
-        abort(400)
+        flash('Invalid Url', 'error')
+        return redirect(url_for('index', Url=request.form['Url'], 
+            Email=request.form['Email'], AlertTimes=request.form['AlertTimes']))
     
     alert = Alert()
     alert.check_id = check.id
@@ -39,24 +43,19 @@ def add_check_and_alert():
     alert.num_of_times = request.form['AlertTimes']
     g.db.add(alert)
     
-    g.db.flush()
-    flash('Created Alert!')
+    flash('Created Alert!', 'success')
 
-    return redirect('/')
-
-@app.route('/add-alert/<uid>', methods=['GET']) 
-def add_alert(uid):
-    try:
-        check = g.db.query(UriCheck).filter(UriCheck.id == uid).one()
-    except:
-        abort(400)
-
-    return render_template('add_alert.html', check = check)
+    return redirect(url_for('index'))
 
 @app.route('/delete-alert/<uid>', methods=['GET'])
 def delete_alert(uid):
-    flash('Note implemented yet!')
-    redirect('/')
+    try:
+        alert = g.db.query(Alert).filter(Alert.id == uid, Alert.stop==False).one()
+        alert.stop = True
+        flash('Alert deleted!', 'success')
+    except NoResultFound:
+        flash('No such alert', 'error')
+    return redirect(url_for('index'))
 
 def create_or_get_uri_check(db, url):
     if not (url.startswith('http://') or url.startswith('https://')):
@@ -66,7 +65,7 @@ def create_or_get_uri_check(db, url):
     if found_checks.count() > 0:
         return found_checks[0]
     else:
-        check = UriCheck()    
+        check = UriCheck()
         check.url = url 
         check.check_options 
         
@@ -75,9 +74,8 @@ def create_or_get_uri_check(db, url):
             url_stream = urllib2.urlopen(check.url)
             first_monitor.has_changes(url_stream)
         except urllib2.URLError, e:
-            print e.reason
-            return None
-        
+            if not isinstance(e, urllib2.HTTPError):
+                log.error(e.reason)
+                return None
         return check
-    
 

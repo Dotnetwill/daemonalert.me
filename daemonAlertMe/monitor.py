@@ -50,7 +50,7 @@ class EmailAlert(object):
     NO_LIMIT = -1
     def __init__(self, db_session):
         self.db_session = db_session
-        
+
     def send_alerts_for_id(self, check_id, url):
         alerts = self.db_session.query(Alert).from_statement("SELECT * FROM Alerts WHERE check_id = :id AND stop=0 AND  (num_of_times = :no_limit_value OR num_of_times_alerted < num_of_times)").params(id = check_id, no_limit_value = EmailAlert.NO_LIMIT).all()
         for alert in alerts:
@@ -59,7 +59,7 @@ class EmailAlert(object):
             alert.num_of_times_alerted = alert.num_of_times_alerted + 1
 
             if not alert.num_of_times_alerted == self.NO_LIMIT and alert.num_of_times_alerted >= alert.num_of_times:
-                self.db_session.delete(alert)
+                alert.stop = True
 
     def _create_email(self, alert, url):
         email_sender.send_email(alert.email,'alert', 'Alert: URL Change', 

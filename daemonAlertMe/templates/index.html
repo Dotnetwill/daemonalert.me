@@ -1,5 +1,12 @@
 {% extends "_masterpage.html" %}
 {% block body %}
+{% with messages = get_flashed_messages(with_categories=true)  %}
+{% if messages %}
+    {% for cat, msg in messages  %}
+    <div class="notification-{{ cat }}">{{ msg }}</div>
+    {% endfor %}
+{% endif  %}
+{% endwith  %}
 <div class="aboutbox"><h2>About us</h2><p>Constantly refreshing a page waiting for it to change?  Check a site every morning to see if registration has opened?  Well why not let us do that for you!</p><br /> 
 	<p>We will monitor a url for you and notify you if there is any change to the page via email or twitter</p>
 </div>
@@ -50,11 +57,10 @@
     });
     </script>
         <div id="extra-alert">
-
-        <h2>Alert Me For:</h2>
-        <br />
+            <img src="/static/close.png" id="close-button" />
+            <h3>Alert me when <a href="" id="add_alert_url"></a> changes</h3>
+            <br />
             <form action="/add" method="post">
-                <p><a href="" id="add_alert_url"></a></p>
                 <br />
                 <p><label for="Email">When it changes email</label> 
                 <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="" /> </p>
