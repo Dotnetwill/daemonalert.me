@@ -4,19 +4,19 @@
 <html>
     <head>
         <LINK REL=StyleSheet HREF="{{ url_for('static', filename='main.css') }}" TYPE="text/css" MEDIA=screen>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
-        <script src="{{url_for('static', filename='js/jquery.leanModal.min.js')}}" type="text/javascript"></script>
-        
+       
         <title>DaemonAlert.me</title>
     </head>
     <body>
         <div class="header">
             <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" class="logo" /></a>
             <ul class="navlinks">
-            	<li><a href="#">Source</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="https://github.com/dotnetwill/daemonalert.me">Source</a></li>
+                <li><a href="mailto:info@daemonalert.me">Contact Us</a></li>
             </ul>
         </div>
        {% block body %} {% endblock %}	
-    </body>    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+    <script src="{{url_for('static', filename='js/jquery.leanModal.min.js')}}" type="text/javascript"></script>
+   </body>
 </html> 
