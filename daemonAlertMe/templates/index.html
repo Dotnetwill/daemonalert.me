@@ -15,10 +15,10 @@
     	<h2>Watch this for me</h2>
           <form action="/add" method="post">
              <p><label for="Url">Url</label> 
-             <input class="form-textbox" id="Url" maxlength="135" name="Url" type="text" value="" /> </p>
+             <input class="form-textbox" id="Url" maxlength="135" name="Url" type="text" value="{{ url }}" /> </p>
              <br />
               <p><label for="Email">When it changes email</label> 
-             <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="" /> </p>
+              <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="{{ email }}" /> </p>
              <br />
              <p><label for="AlertTimes">Alert Me</label> </p>
             <p><input type="radio" name="AlertTimes" value="1" checked="" style="padding: 10px" />Just of the next change</p>
@@ -44,18 +44,6 @@
     </div>
 {% endif %}
         </div>
-        <script type="text/javascript">
-    $(function (){
-        $('a.add-alert').click(function() {
-            var container = $(this).parents('.ignore-result');
-            var target = container.find('.url_watched').attr('href');
-            $('#add_alert_url').attr('href', target);
-            $('#add_alert_url').html(target);
-            $('#hidden_url').attr('value', target);
-        });
-        $("a[rel*=leanModal]").leanModal(); 
-    });
-    </script>
         <div id="extra-alert">
             <img src="/static/close.png" id="close-button" />
             <h3>Alert me when <a href="" id="add_alert_url"></a> changes</h3>
@@ -63,14 +51,14 @@
             <form action="/add" method="post">
                 <br />
                 <p><label for="Email">When it changes email</label> 
-                <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="" /> </p>
+                <input class="form-textbox" id="Email" maxlength="135" name="Email" type="text" value="{{ email }}" /> </p>
                 <br />
                 <p><label for="AlertTimes">Alert Me</label> </p>
                 <p><input type="radio" name="AlertTimes" value="1" checked="" style="padding: 10px" />Just of the next change</p>
                 <p><input type="radio" name="AlertTimes" value="0" style="padding: 10px" />Every change till I disable it </p>
                 <br /> 
                 <input type="hidden" value="" name="Url" id="hidden_url" /> 
-                <p><input type="submit" class="submit-button" value="Add Alert" /></p>
+                <p><input type="submit" style="float: right;" class="submit-button" value="Add Alert" /></p>
             </form>
     </div>
 {% endblock %}

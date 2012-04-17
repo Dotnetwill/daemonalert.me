@@ -1,0 +1,8 @@
+Hi,
+
+The URL {{ url }}  you asked us to monitor has changed.  This will be the last
+time you are notified of a change to this URL, to get more please visit http://DaemonAlert.me/continue/{{ aid }}
+
+Regards 
+
+DaemonAlert.Me team

@@ -62,6 +62,12 @@ class EmailAlert(object):
                 alert.stop = True
 
     def _create_email(self, alert, url):
-        email_sender.send_email(alert.email,'alert', 'Alert: URL Change', 
-                url=url)
+        template_name = 'alert'
+        if alert.num_of_times == self.NO_LIMIT:
+            template_name = 'forever_alert'
+        elif alert.stop:
+            template_name = 'last_alert'
+
+        email_sender.send_email(alert.email, template_name, 'Alert: URL Change', 
+                url=url, aid=alert.id)
 

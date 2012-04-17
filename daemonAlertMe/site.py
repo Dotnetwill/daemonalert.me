@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, g, flash
+from flask import Flask, render_template, redirect, request, url_for, g, flash, make_response
 from daemonAlertMe.models import UriCheck, Alert, init_model 
 from daemonAlertMe.monitor import HashCheck
 from daemonAlertMe import config, log
@@ -25,7 +25,12 @@ def shutdown_session(exception=None):
 @app.route('/')
 def index():
     checks = g.db.query(UriCheck).all()
-    return render_template('index.html', checks = checks)
+    email = request.args.get('Email')
+    if email is None and 'email' in request.cookies:
+        email = request.cookies['email']
+    else:
+        email = ''
+    return render_template('index.html', checks = checks, url=request.args.get('Url', ''), email = email)
 
 @app.route('/add', methods=['POST'])
 def add_check_and_alert():
@@ -44,8 +49,20 @@ def add_check_and_alert():
     g.db.add(alert)
     
     flash('Created Alert!', 'success')
+    
+    res = make_response(redirect(url_for('index')))
+    res.set_cookie('email', request.form['Email'])
+    return res
 
-    return redirect(url_for('index'))
+@app.route('/continue/<uid>', methods=['GET'])
+def continue_email(uid):
+    try:
+        alert = g.db.query(Alert).filter(Alert.id == uid).one()
+        alert.stop = False
+        flash('We\'ll let you know the next time it changes!')
+    except NoResultFound:
+        flash('No alert found')
+    return redirect('index')
 
 @app.route('/delete-alert/<uid>', methods=['GET'])
 def delete_alert(uid):

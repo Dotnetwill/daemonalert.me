@@ -1,0 +1,8 @@
+Hi,
+
+The URL {{ url }}  you asked us to monitor has changed. You asked us to notify
+you of every change, if you liked to stop now please visit http://DaemonAlert.me/delete-alert/{{ aid }}.
+
+Regards 
+
+DaemonAlert.Me team
