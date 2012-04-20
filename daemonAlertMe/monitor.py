@@ -14,9 +14,10 @@ class HashCheck(object):
     """
         Creates a sha1 has of a URL then compares it with what we have stored
     """
+
     def __init__(self, uri_check):
         self.uri_check = uri_check
-    
+
     def get_hash(self, url_stream):
         page = url_stream.read()
         return hashlib.sha1(page).hexdigest()
@@ -24,19 +25,21 @@ class HashCheck(object):
     def has_changes(self, url_stream):
         page_hash = self.get_hash(url_stream)
         if not page_hash == self.uri_check.check_options:
-            self.uri_check.check_options = page_hash
+            self.uri_check.check_options = page_hash.encode('utf-8')
             return True
         else:
             return False
-    
+
+
 class UriMonitor(object):
     """
         Finds all the url that have associated alerts and runs a check on them
     """
+
     def __init__(self, dbsession, alerter):
         self.db_session = dbsession
         self.alerter = alerter
-        
+
     def run_all(self):
         checks_to_run = self.db_session.query(UriCheck)\
                 .from_statement("""SELECT UriChecks.check_id, url, check_type,
@@ -58,11 +61,14 @@ class UriMonitor(object):
             except urllib2.URLError, e:
                 log.error('unable to query url: %s' % e)
 
+
 class EmailAlert(object):
     """
         Finds alerts setup for a url change and sends an email
     """
+
     NO_LIMIT = -1
+
     def __init__(self, db_session):
         self.db_session = db_session
 
@@ -92,5 +98,5 @@ class EmailAlert(object):
             template_name = 'last_alert'
 
         email_sender.send_email(alert.email, template_name, 
-                'Alert: URL Change', url=url, aid=alert.id)
+                'Alert: URL Change', url=url, aid=alert.alert_id)
 
