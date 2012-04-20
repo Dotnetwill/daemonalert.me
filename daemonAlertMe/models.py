@@ -42,7 +42,7 @@ class ChangeHistory(Base):
 Session = None
 
 def init_model():
-    engine = create_engine(config.CONN_STRING,  echo=config.ECHO_SQL)
+    engine = create_engine(config.CONN_STRING,  echo=config.ECHO_SQL, pool_recycle=3600)
     Base.metadata.create_all(engine)
     global Session
     Session = scoped_session(sessionmaker(autocommit=True,
