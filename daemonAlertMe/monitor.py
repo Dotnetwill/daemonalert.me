@@ -1,6 +1,7 @@
 import urllib2
 import hashlib
 import datetime
+import twitter
 from marrja_mail import MarrjaMailer
 from daemonAlertMe import log, config
 from daemonAlertMe.models import UriCheck, Alert 
@@ -36,9 +37,9 @@ class UriMonitor(object):
         Finds all the url that have associated alerts and runs a check on them
     """
 
-    def __init__(self, dbsession, alerter):
+    def __init__(self, dbsession, alerters):
         self.db_session = dbsession
-        self.alerter = alerter
+        self.alerters = alerters
 
     def run_all(self):
         checks_to_run = self.db_session.query(UriCheck)\
@@ -57,12 +58,34 @@ class UriMonitor(object):
                 url_stream = urllib2.urlopen(check.url)
                 if hash_check.has_changes(url_stream):
                     log.info('hash changes requesting alert sent')
-                    self.alerter.send_alerts_for_id(check.check_id, check.url)
+                    for alerter in self.alerters:
+                        self.alerter\
+                                .send_alerts_for_id(check.check_id, check.url)
             except urllib2.URLError, e:
                 log.error('unable to query url: %s' % e)
 
 
-class EmailAlert(object):
+class BaseAlert(object):
+    """Base class for sending out notifications"""
+    def send_alerts_for_id(self, check_id, url):
+        pass
+
+
+class GeneralTweetAlert(BaseAlert):
+    """
+        Sends out a tweet for every URL update
+    """
+
+    def send_alerts_for_id(self, check_id, url):
+         twitter_api = twitter.Api(consumer_key=config.TW_CONSUMER_KEY,
+                           consumer_secret=config.TW_CONSUMER_SECRET,
+                           access_token_key=config.TW_ACCESS_TOKEN,
+                           access_token_secret=config.TW_ACCESS_TOKEN_SECRET)
+
+         twitter_api.PostUpdate(u"Alert: %s" % url)
+
+
+class EmailAlert(BaseAlert):
     """
         Finds alerts setup for a url change and sends an email
     """
