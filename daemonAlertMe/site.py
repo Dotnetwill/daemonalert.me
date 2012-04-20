@@ -22,6 +22,9 @@ def shutdown_session(exception=None):
     g.db.flush()
     daemonAlertMe.models.Session.remove()
 
+    if not exception is None:
+        log.error(u"Request exceptioned out %s: " % exception)
+
 @app.route('/')
 def index():
     checks = g.db.query(UriCheck).all()
@@ -30,69 +33,81 @@ def index():
         email = request.cookies['email']
     else:
         email = ''
-    return render_template('index.html', checks = checks, url=request.args.get('Url', ''), email = email)
+
+    return render_template('index.html', checks = checks, 
+            url=request.args.get('Url', ''), email = email)
 
 @app.route('/add', methods=['POST'])
 def add_check_and_alert():
     check = create_or_get_uri_check(g.db, request.form['Url'])
-    
+
     if check == None:
         flash('Invalid Url', 'error')
         return redirect(url_for('index', Url=request.form['Url'], 
-            Email=request.form['Email'], AlertTimes=request.form['AlertTimes']))
-    
+          Email=request.form['Email'], AlertTimes=request.form['AlertTimes']))
+
     alert = Alert()
-    alert.check_id = check.id
+    alert.check_id = check.check_id
     alert.check = check
     alert.email = request.form['Email']
     alert.num_of_times = request.form['AlertTimes']
     g.db.add(alert)
-    
+
     flash('Created Alert!', 'success')
-    
+
     res = make_response(redirect(url_for('index')))
     res.set_cookie('email', request.form['Email'])
+
     return res
 
 @app.route('/continue/<uid>', methods=['GET'])
 def continue_email(uid):
     try:
-        alert = g.db.query(Alert).filter(Alert.id == uid).one()
+        alert = g.db.query(Alert).filter(Alert.alert_id == uid).one()
+        alert.num_of_times_alerted = 0
+        alert.num_of_times = 1
         alert.stop = False
         flash('We\'ll let you know the next time it changes!')
     except NoResultFound:
         flash('No alert found')
+
     return redirect('index')
 
 @app.route('/delete-alert/<uid>', methods=['GET'])
 def delete_alert(uid):
     try:
-        alert = g.db.query(Alert).filter(Alert.id == uid, Alert.stop==False).one()
+        alert = g.db.query(Alert).filter(Alert.alert_id == uid, 
+                                         Alert.stop==False)\
+                 .one()
         alert.stop = True
         flash('Alert deleted!', 'success')
     except NoResultFound:
         flash('No such alert', 'error')
+
     return redirect(url_for('index'))
 
 def create_or_get_uri_check(db, url):
     if not (url.startswith('http://') or url.startswith('https://')):
         url = 'http://' + url
     
-    found_checks = db.query(UriCheck).filter(UriCheck.url == url)
-    if found_checks.count() > 0:
-        return found_checks[0]
-    else:
-        check = UriCheck()
-        check.url = url 
-        check.check_options 
-        
-        first_monitor = HashCheck(check)
-        try:
-            url_stream = urllib2.urlopen(check.url)
-            first_monitor.has_changes(url_stream)
-        except urllib2.URLError, e:
-            if not isinstance(e, urllib2.HTTPError):
-                log.error(e.reason)
-                return None
-        return check
+    try:
+        found_check = db.query(UriCheck).filter(UriCheck.url == url).one()
+        return found_check
+    except NoResultFound:
+        #Url is not being monitored, ignore the error and create it
+        pass
+
+    check = UriCheck()
+    check.url = url 
+    check.check_options 
+
+    first_monitor = HashCheck(check)
+    try:
+        url_stream = urllib2.urlopen(check.url)
+        first_monitor.has_changes(url_stream)
+    except urllib2.URLError, e:
+        if not isinstance(e, urllib2.HTTPError):
+            log.error(e.reason)
+            return None
+    return check
 

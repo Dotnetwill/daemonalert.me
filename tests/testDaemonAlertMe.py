@@ -277,7 +277,7 @@ class EmailAlertTests(DbInMemoryTest):
         
         self.assertEquals(self.cur_session.query(Alert).all()[0].num_of_times_alerted, 1)
  
-    def test_send_alerts_for_id_1_reaches_message_count_alert_deleted(self):
+    def test_send_alerts_for_id_1_reaches_message_count_stop_is_set_on_alert(self):
         uri_check_id = 1
         expected_url = 'google.com'
         
@@ -286,7 +286,7 @@ class EmailAlertTests(DbInMemoryTest):
         
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
 
-        assert self.cur_session.query(Alert).count() == 0
+        assert self.cur_session.query(Alert).one().stop
 
     def test_send_alerts_for_id_1_over_alert_count_msg_not_sent(self):
         uri_check_id = 1
@@ -315,39 +315,40 @@ class SiteTests(DbInMemoryTest):
         self._site = create_app()
         self._site.config['TESTING'] = True
         self.app = self._site.test_client()
+
         #Patch out urlopen
         self.fake_url_reader = FakeUrlReader()
         self.patched_openurl = urllib2.urlopen
 
         urllib2.urlopen = self.fake_url_reader.open
-        
 
     def clean_up_after_test(self):
         urllib2.urlopen = self.patched_openurl
         daemonAlertMe.models.Session.remove()
+
     def test_index_no_entries_empty_message_shown(self):
         res = self.app.get('/') 
         assert "Sorry, we're empty at the moment!" in res.data
     
     def test_index_entries_both_urls_shown(self):
         expected_url1 = 'google.com'
-        
         self.add_with_one_uri_check_with_id_and_no_alerts(id = 0, url = expected_url1)
+
         expected_url2 = 'knvrt.me'
         self.add_with_one_uri_check_with_id_and_no_alerts(id = 1, url = expected_url2)
-         
+
         res = self.app.get('/') 
-       
-        assert '<a href="' + expected_url1 + '">' + expected_url1 + '</a>' in res.data
-        assert '<a href="' + expected_url2 + '">' + expected_url2 + '</a>' in res.data
+        print res.data
+        assert 'href="' + expected_url1 + '"' in res.data
+        assert 'href="' + expected_url2 + '"' in res.data
         
     def test_add_1_entry_added_database(self):
         expected_url = 'http://test'
         expected_email = 'test@domain.com'
         expected_alert_times = 1
-        
+
         self.app.post('/add', data=dict(Url=expected_url, Email=expected_email, AlertTimes=expected_alert_times)) 
-       
+
         checks_in_db = self.cur_session.query(UriCheck).all()
         alerts_in_db = self.cur_session.query(Alert).all()
 
@@ -355,20 +356,20 @@ class SiteTests(DbInMemoryTest):
         assert alerts_in_db[0].email == expected_email
         assert alerts_in_db[0].check_id == checks_in_db[0].id 
         assert alerts_in_db[0].num_of_times == expected_alert_times
-        
+
     def test_add_1_entry_no_http_at_start_add_when_inserted(self):
         expected_url = 'test'
-      
+
         self.app.post('/add', data=dict(Url=expected_url, Email='test@domain.com', AlertTimes=1)) 
-       
+
         checks_in_db = self.cur_session.query(UriCheck).all()
         assert checks_in_db[0].url == 'http://' + expected_url
-    
+
     def test_add_1_entry_starts_with_https_no_http_prepensws(self):
         expected_url = 'https://test'
-      
+
         self.app.post('/add', data=dict(Url=expected_url, Email='test@domain.com', AlertTimes=1)) 
-       
+
         checks_in_db = self.cur_session.query(UriCheck).all()
         assert checks_in_db[0].url == expected_url
         
