@@ -384,7 +384,7 @@ class SiteTests(DbTest):
         alerts_in_db = self.cur_session.query(Alert).all()
 
         assert checks_in_db[0].url == expected_url
-        assert alerts_in_db[0].email == expected_email
+        assert alerts_in_db[0].target == expected_email
         assert alerts_in_db[0].check_id == checks_in_db[0].check_id
         assert alerts_in_db[0].num_of_times == expected_alert_times
 

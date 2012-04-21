@@ -1,0 +1,11 @@
+*Add logic to prevent an email alert being set up more than once
+*Send tweets to a user when instead of an email
+    **UI
+    **Validation
+    **Check the twitter exists
+*Add diff views to email (liblxml)
+*Admin view
+    *Number of alerts
+    *Latest alerts
+    *Diff views with dates
+*TEST ALL THE THINGS

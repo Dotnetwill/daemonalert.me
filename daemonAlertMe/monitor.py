@@ -83,7 +83,7 @@ class GeneralTweetAlert(BaseAlert):
                             access_token_secret=config.TW_ACCESS_TOKEN_SECRET)
 
             twitter_api.PostUpdate(u"Alert: %s" % url)
-
+            log.info("Tweeted to public stream")
         except twitter.TwitterError, e:
             log.error(u"TwitterError: %s" % e)
 
@@ -107,7 +107,7 @@ class EmailAlert(BaseAlert):
           .params(cid = check_id, no_limit_value = EmailAlert.NO_LIMIT).all()
 
         for alert in alerts:
-            log.info('found someone to alert ' + alert.email)
+            log.info('found someone to alert ' + alert.target)
             self._create_email(alert, url)
             alert.num_of_times_alerted = alert.num_of_times_alerted + 1
 
