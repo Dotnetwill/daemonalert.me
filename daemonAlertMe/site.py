@@ -49,7 +49,7 @@ def add_check_and_alert():
     alert = Alert()
     alert.check_id = check.check_id
     alert.check = check
-    alert.email = request.form['Email']
+    alert.target = request.form['Email']
     alert.num_of_times = request.form['AlertTimes']
     g.db.add(alert)
 

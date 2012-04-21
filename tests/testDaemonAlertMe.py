@@ -122,7 +122,7 @@ class DbTest(unittest.TestCase):
 
         alert = Alert()
         alert.check_id = uri_check_id
-        alert.email = target_email
+        alert.target = target_email
         alert.num_of_times = num_of_times
         alert.num_of_times_alerted = num_of_times_alerted
         self.cur_session.add(alert)
@@ -135,7 +135,7 @@ class UriMonitorTests(DbTest):
         self.alerter = FakeAlerter()
 
         #The class under test
-        self.monitor = UriMonitor(self.cur_session, self.alerter)
+        self.monitor = UriMonitor(self.cur_session, [self.alerter])
 
         #Patch out urlopen
         self.fake_url_reader = FakeUrlReader()
@@ -402,7 +402,7 @@ class SiteTests(DbTest):
         expected_url = 'https://test'
 
         self.app.post('/add', data=dict(Url=expected_url, 
-                                        Email='test@domain.com', 
+                                        Email='test@domain.com',
                                         AlertTimes=1)) 
 
         checks_in_db = self.cur_session.query(UriCheck).all()

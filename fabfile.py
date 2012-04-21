@@ -5,10 +5,10 @@ from daemonAlertMe import monitor, models
 def run_check():
     models.init_model()
     a_session = models.Session()
-    alerter = monitor.EmailAlert(a_session)
-
+    email_alert = monitor.EmailAlert(a_session)
+    tweet_all_alert = monitor.GeneralTweetAlert()
     #Run app
-    monitor.UriMonitor(a_session, alerter).run_all()
+    monitor.UriMonitor(a_session, [email_alert, tweet_all_alert]).run_all()
     a_session.flush()
     #teardown
     models.Session.remove()

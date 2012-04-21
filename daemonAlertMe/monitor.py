@@ -59,8 +59,7 @@ class UriMonitor(object):
                 if hash_check.has_changes(url_stream):
                     log.info('hash changes requesting alert sent')
                     for alerter in self.alerters:
-                        self.alerter\
-                                .send_alerts_for_id(check.check_id, check.url)
+                        alerter.send_alerts_for_id(check.check_id, check.url)
             except urllib2.URLError, e:
                 log.error('unable to query url: %s' % e)
 
@@ -77,13 +76,16 @@ class GeneralTweetAlert(BaseAlert):
     """
 
     def send_alerts_for_id(self, check_id, url):
-         twitter_api = twitter.Api(consumer_key=config.TW_CONSUMER_KEY,
-                           consumer_secret=config.TW_CONSUMER_SECRET,
-                           access_token_key=config.TW_ACCESS_TOKEN,
-                           access_token_secret=config.TW_ACCESS_TOKEN_SECRET)
+        try:
+            twitter_api = twitter.Api(consumer_key=config.TW_CONSUMER_KEY,
+                            consumer_secret=config.TW_CONSUMER_SECRET,
+                            access_token_key=config.TW_ACCESS_TOKEN,
+                            access_token_secret=config.TW_ACCESS_TOKEN_SECRET)
 
-         twitter_api.PostUpdate(u"Alert: %s" % url)
+            twitter_api.PostUpdate(u"Alert: %s" % url)
 
+        except twitter.TwitterError, e:
+            log.error(u"TwitterError: %s" % e)
 
 class EmailAlert(BaseAlert):
     """
@@ -120,6 +122,6 @@ class EmailAlert(BaseAlert):
         elif alert.stop:
             template_name = 'last_alert'
 
-        email_sender.send_email(alert.email, template_name, 
+        email_sender.send_email(alert.target, template_name, 
                 'Alert: URL Change', url=url, aid=alert.alert_id)
 
