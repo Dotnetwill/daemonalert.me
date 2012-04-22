@@ -30,7 +30,7 @@ class DefaultConfig(object):
     CONSOLE_LOG = True
     ACCEPTABLE_HTTP_ERRORS = [500, 404]
 
-def GetConfig():
+def get_config():
     """
         Tries to load configuration for the site in the following order:
             *Try to import prod_conf
@@ -62,9 +62,9 @@ def GetConfig():
     print("Using DefaultConfig")
     return DefaultConfig()
 
-config = GetConfig()
+config = get_config()
 
-def SetupLogging():
+def setup_logging():
     log = logging.getLogger("daemonAlertMe")
     log.setLevel(config.LOG_LEVEL)
 
@@ -81,5 +81,5 @@ def SetupLogging():
 
     return log
 
-log = SetupLogging()
+log = setup_logging()
 

@@ -1,6 +1,7 @@
-from flask import Flask, render_template, redirect, request, url_for, g, flash, make_response
+from flask import Flask, render_template, redirect, request, url_for, g,\
+                  flash, make_response
 from daemonAlertMe.models import UriCheck, Alert, init_model 
-from daemonAlertMe.monitor import HashCheck
+from daemonAlertMe.monitor import HashCheck, TwitterAlert
 from daemonAlertMe import config, log
 from sqlalchemy.orm.exc import NoResultFound
 import urllib2
@@ -51,6 +52,8 @@ def add_check_and_alert():
     alert.check = check
     alert.target = request.form['Email']
     alert.num_of_times = request.form['AlertTimes']
+    alert.alert_type = get_alert_type(request.form['Email'])
+
     g.db.add(alert)
 
     flash('Created Alert!', 'success')
@@ -59,6 +62,14 @@ def add_check_and_alert():
     res.set_cookie('email', request.form['Email'])
 
     return res
+
+def get_alert_type(target):
+    EMAIL_REGEX = """^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})"""
+    import re
+    if re.match(EMAIL_REGEX, target):
+        return u"email"
+
+    return TwitterAlert.ALERT_TYPE
 
 @app.route('/continue/<uid>', methods=['GET'])
 def continue_email(uid):
