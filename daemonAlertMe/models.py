@@ -11,9 +11,9 @@ class UriCheck(Base):
     __tablename__ = u"UriChecks"
 
     check_id = Column(Integer, primary_key=True)
-    url = Column(Unicode, nullable=False)
-    check_type = Column(Unicode)
-    check_options = Column(Unicode)
+    url = Column(Unicode, length=2500, nullable=False)
+    check_type = Column(Unicode, length=255)
+    check_options = Column(Unicode, length=2048)
     last_check = Column(DateTime, default=datetime.datetime.utcnow())
 
 class Alert(Base):
@@ -23,8 +23,8 @@ class Alert(Base):
     alert_id = Column(Integer, primary_key=True)
     check_id = Column(Integer, ForeignKey('UriChecks.check_id'))
     check = relationship('UriCheck')
-    alert_type = Column(Unicode, nullable=False, default=u"email")
-    target = Column(Unicode, nullable=False)
+    alert_type = Column(Unicode, length=255, nullable=False, default=u"email")
+    target = Column(Unicode, length=2048, nullable=False)
     num_of_times = Column(Integer, nullable=False)
     num_of_times_alerted = Column(Integer, nullable = False, default=0)
     stop = Column(Boolean, default=False) 
@@ -36,7 +36,7 @@ class ChangeHistory(Base):
     change_id = Column(Integer, primary_key=True)
     check_id = Column(Integer, ForeignKey('UriChecks.check_id'))
     check = relationship('UriCheck')
-    snapshot = Column(Unicode, nullable=False)
+    snapshot = Column(UnicodeText, nullable=False)
     date_taken = Column(DateTime, default=datetime.datetime.utcnow(), 
                         nullable=False)
 
