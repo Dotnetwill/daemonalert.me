@@ -11,6 +11,7 @@ class DefaultConfig(object):
     #Logging
     LOG_LEVEL = logging.DEBUG
     LOG_PATH = 'daemonAlertMe.log'
+    LOG_EMAIL = None
     #SQLAlchemy 
     CONN_STRING = u'sqlite:///site.db'
     ECHO_SQL = False
@@ -68,17 +69,23 @@ def setup_logging():
     log = logging.getLogger("daemonAlertMe")
     log.setLevel(config.LOG_LEVEL)
 
-    fh = logging.FileHandler(config.LOG_PATH)
+    file_handler = logging.FileHandler(config.LOG_PATH)
     formatter = logging.Formatter("%(asctime)s - %(filename)s :: #%(lineno)d ::" +
     "%(funcName)s - %(levelname)s - %(message)s")
-    fh.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
 
-    log.addHandler(fh)
+    log.addHandler(file_handler)
+
     if config.CONSOLE_LOG:
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(formatter)
         log.addHandler(console_handler)
-
+    
+    if not config.LOG_EMAIL is None:
+        email_logger = logging.SMTPHandler("localhost", "logging@DaemonAlert.Me", config.LOG_EMAIL, "Oh shit sticks, Error Logged!!")
+        email_logger.setLevel(email_logger)
+        log.addHandler(email_logger)
+        
     return log
 
 log = setup_logging()
