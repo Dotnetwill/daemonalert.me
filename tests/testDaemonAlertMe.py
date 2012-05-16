@@ -332,10 +332,10 @@ class EmailAlertTests(DbTest):
         self.add_alert_for_uri_check_with_id(uri_check_id,
                                            num_of_times = EmailAlert.NO_LIMIT,
                                            num_of_times_alerted = 2)
-
         self.email_alert.send_alerts_for_id(uri_check_id, expected_url)
 
         assert monitor.email_sender.send_called
+        assert not self.cur_session.query(Alert).one().stop
 
 class SiteTests(DbTest):
     def setup_for_test(self):

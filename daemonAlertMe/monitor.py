@@ -92,7 +92,7 @@ class BaseAlert(object):
             yield alert
             #Work out if we should stop
             alert.num_of_times_alerted = alert.num_of_times_alerted + 1
-            if not alert.num_of_times_alerted == self.NO_LIMIT \
+            if not alert.num_of_times == self.NO_LIMIT \
                and alert.num_of_times_alerted >= alert.num_of_times:
                 alert.stop = True
 

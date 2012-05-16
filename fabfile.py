@@ -2,10 +2,9 @@ from fabric.api import local, sudo, put, task, abort
 from fabric.contrib.project import rsync_project
 from os import path
 from daemonAlertMe import monitor, models
-import nose
 
-#remote_path = '/home/www/knvrt.me/app'
-remote_path = '~/test_sync/'
+remote_path = '/srv/www/daemonalert.me/app'
+#remote_path = '~/test_sync/'
 rsync_exclude = ['*.pyc', 
                  'dev_conf.py', 
                  '*.log', 
@@ -28,13 +27,8 @@ def deploy():
 
 @task
 def update_site_config():
-    #put(path.join(local_path, '../conf/prod_conf.py'), path.join(remote_path, 'prod_conf.py'))
+    put(path.join(local_path, 'prod_conf.py'), path.join(remote_path, 'prod_conf.py'))
     restart_services()
-
-@task
-def create_version(version_info):
-    local('git tag -a %s -m "Created tag for release %s"' % (version_info, version_info))
-    local('git push --tags')
 
 @task
 def test(args=None):
